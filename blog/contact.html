@@ -29,7 +29,7 @@
 
     <div style="background:#FFF7ED; border:1px solid #FED7AA; border-radius:12px; padding:32px; margin-bottom:40px;">
       <h2 style="font-size:1.2rem; margin-bottom:16px;">Send us a message</h2>
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex; flex-direction:column; gap:16px;">
+      <form id="contact-form" style="display:flex; flex-direction:column; gap:16px;">
         <div>
           <label style="display:block; font-weight:600; margin-bottom:6px; font-size:0.9rem;">Your Name</label>
           <input type="text" name="name" required placeholder="Jane Smith"
@@ -80,5 +80,43 @@
     </div>
   </footer>
   <script src="assets/js/main.js"></script>
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXWScUIC_xedmOGrmqRbOBuemCyqRjbnR08JqG9SatQIi6OKQCyRLIzaDabVIHjhtW/exec";
+
+    document.getElementById("contact-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = this.querySelector("button[type=submit]");
+      const original = btn.textContent;
+      btn.textContent = "Sending...";
+      btn.disabled = true;
+
+      const data = {
+        name: this.name.value,
+        email: this.email.value,
+        subject: this.subject.value,
+        message: this.message.value
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        this.innerHTML = `
+          <div style="text-align:center; padding:32px 0;">
+            <div style="font-size:3rem; margin-bottom:16px;">✅</div>
+            <h3 style="margin-bottom:8px;">Message sent!</h3>
+            <p style="color:#64748B;">We'll get back to you within 2-3 business days.</p>
+          </div>`;
+      } catch (err) {
+        btn.textContent = original;
+        btn.disabled = false;
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>
