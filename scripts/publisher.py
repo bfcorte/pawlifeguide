@@ -252,6 +252,152 @@ def update_sitemap(meta: dict, config: dict) -> None:
         log.info("Sitemap updated")
 
 
+CATEGORY_ICONS = {
+    "dogs": "🐕", "dog": "🐕",
+    "cats": "🐈", "cat": "🐈",
+    "fish": "🐠", "aquarium": "🐠", "aquário": "🐠",
+    "birds": "🐦", "bird": "🐦",
+    "small-pets": "🐹", "hamster": "🐹", "rabbit": "🐰",
+    "reptiles": "🦎", "reptile": "🦎",
+    "horses": "🐴", "horse": "🐴",
+    "guides": "📖", "guide": "📖",
+    "health": "💊", "nutrition": "🥗", "food": "🍖",
+    "training": "🎓", "grooming": "✂️",
+    "pets": "🐾",
+}
+
+
+def get_category_icon(category: str) -> str:
+    key = category.lower().replace(" ", "-")
+    for k, icon in CATEGORY_ICONS.items():
+        if k in key:
+            return icon
+    return "🐾"
+
+
+def ensure_category_page(category: str, config: dict) -> None:
+    """Create category page if it doesn't exist, and update categories index."""
+    slug = category.lower().strip().replace(" ", "-")
+    cat_dir = Path(f"blog/category/{slug}")
+    cat_dir.mkdir(parents=True, exist_ok=True)
+    cat_page = cat_dir / "index.html"
+    url = config["blog_identity"]["url"]
+    icon = get_category_icon(slug)
+
+    if not cat_page.exists():
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{category.title()} — PawLife Guide</title>
+  <meta name="description" content="Best tips and product reviews for {category.lower()} owners. Curated by PawLife Guide.">
+  <link rel="canonical" href="{url}/category/{slug}/">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J31FHEERN2"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-J31FHEERN2');</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="logo">PawLife Guide</a>
+      <p class="tagline">The best tips and products for your pet</p>
+      <nav>
+        <a href="../../index.html">Home</a>
+        <a href="../index.html">Categories</a>
+        <a href="../../about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <div class="container" style="padding:48px 0 80px;">
+    <div style="margin-bottom:32px;">
+      <a href="../index.html" style="color:#F97316; font-size:0.9rem;">← All Categories</a>
+    </div>
+    <h1 style="font-size:2.2rem; font-weight:800; margin-bottom:8px;">{icon} {category.title()}</h1>
+    <p style="color:#64748B; margin-bottom:48px;">All articles about {category.lower()}.</p>
+    <div class="posts-grid">
+      <!-- CATEGORY_POSTS_START -->
+    </div>
+  </div>
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:white;">PawLife Guide</strong></p>
+      <p class="disclaimer">PawLife Guide is a participant in the Amazon Services LLC Associates Program.</p>
+      <nav class="footer-nav">
+        <a href="../../privacy.html">Privacy Policy</a>
+        <a href="../../disclaimer.html">Affiliate Disclaimer</a>
+        <a href="../../contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>"""
+        cat_page.write_text(html, encoding="utf-8")
+        log.info(f"Created category page: {cat_page}")
+
+    # Add post card to category page
+    return slug
+
+
+def update_category_page(category_slug: str, meta: dict) -> None:
+    """Inject post card into the category page."""
+    cat_page = Path(f"blog/category/{category_slug}/index.html")
+    if not cat_page.exists():
+        return
+    content = cat_page.read_text(encoding="utf-8")
+    slug = meta["slug"]
+    title = meta["title"]
+    description = meta["meta_description"]
+    date_str = datetime.now().strftime("%B %d, %Y")
+
+    card = f"""
+      <!-- POST: {slug} -->
+      <article class="post-card">
+        <div class="post-card-body">
+          <h2><a href="../../posts/{slug}/index.html">{title}</a></h2>
+          <p>{description}</p>
+          <div class="post-meta"><time>{date_str}</time> &bull; {meta.get('reading_time','5 min')} read</div>
+          <a href="../../posts/{slug}/index.html" class="btn-read-more">Read More →</a>
+        </div>
+      </article>"""
+
+    marker = "<!-- CATEGORY_POSTS_START -->"
+    if marker in content:
+        content = content.replace(marker, marker + card)
+        cat_page.write_text(content, encoding="utf-8")
+
+
+def update_categories_index(category: str, config: dict) -> None:
+    """Add category card to the main categories index if not already present."""
+    index_path = Path("blog/category/index.html")
+    if not index_path.exists():
+        return
+    content = index_path.read_text(encoding="utf-8")
+    slug = category.lower().strip().replace(" ", "-")
+    url = config["blog_identity"]["url"]
+    icon = get_category_icon(slug)
+
+    marker = f"<!-- CAT: {slug} -->"
+    if marker in content:
+        return  # already listed
+
+    card = f"""
+      {marker}
+      <a href="{slug}/index.html" style="display:block; background:white; border:1px solid #E2E8F0; border-radius:12px; padding:28px; text-align:center; text-decoration:none; transition:all 0.25s; color:#1A1A2E;"
+         onmouseover="this.style.boxShadow='0 8px 32px rgba(249,115,22,0.15)';this.style.borderColor='#FED7AA'"
+         onmouseout="this.style.boxShadow='';this.style.borderColor='#E2E8F0'">
+        <div style="font-size:2.5rem; margin-bottom:12px;">{icon}</div>
+        <strong style="font-size:1.05rem;">{category.title()}</strong>
+      </a>"""
+
+    insert_marker = "<!-- CATEGORIES_END -->"
+    if insert_marker in content:
+        content = content.replace(insert_marker, card + "\n      " + insert_marker)
+        index_path.write_text(content, encoding="utf-8")
+        log.info(f"Added '{category}' to categories index")
+
+
 def update_feed(meta: dict, config: dict) -> None:
     feed_path = Path("blog/feed.xml")
     url = config["blog_identity"]["url"]
@@ -294,6 +440,12 @@ def publish(slug: str) -> dict:
     update_homepage(meta, config)
     update_sitemap(meta, config)
     update_feed(meta, config)
+
+    # Auto-create and update category pages
+    category = meta.get("category", "pets")
+    cat_slug = ensure_category_page(category, config)
+    update_category_page(cat_slug, meta)
+    update_categories_index(category, config)
 
     # Move to published
     published_log = {

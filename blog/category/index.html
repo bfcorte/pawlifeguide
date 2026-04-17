@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Categories | PawLife Guide</title>
+  <meta name="description" content="Browse all pet care categories on PawLife Guide — dogs, cats, fish, birds, small pets and more.">
+  <link rel="canonical" href="https://bfcorte.github.io/pawlifeguide/category/">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J31FHEERN2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J31FHEERN2');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="../index.html" class="logo">PawLife Guide</a>
+      <p class="tagline">The best tips and products for your pet</p>
+      <nav>
+        <a href="../index.html">Home</a>
+        <a href="index.html">Categories</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container" style="padding: 60px 0 80px;">
+    <h1 style="font-size:2.2rem; font-weight:800; margin-bottom:8px;">All Categories</h1>
+    <p style="color:#64748B; margin-bottom:48px;">Browse articles by pet type. New categories are created automatically as we publish more content.</p>
+
+    <div id="categories-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:24px;">
+      <!-- Categories injected by publisher.py — CATEGORIES_START -->
+      <!-- CATEGORIES_END -->
+    </div>
+
+    <div id="empty-state" style="text-align:center; padding:60px 0; color:#64748B;">
+      <p style="font-size:3rem; margin-bottom:16px;">🐾</p>
+      <p style="font-size:1.1rem; margin-bottom:8px;">Categories will appear here automatically.</p>
+      <p>Run <code style="background:#FFF7ED; padding:2px 8px; border-radius:4px; color:#F97316;">/blog pets</code> to publish your first article!</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:white;">PawLife Guide</strong> &mdash; The best tips and products for your pet</p>
+      <p class="disclaimer">PawLife Guide is a participant in the Amazon Services LLC Associates Program.</p>
+      <nav class="footer-nav">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../disclaimer.html">Affiliate Disclaimer</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    const cats = document.querySelectorAll('.category-card');
+    if (cats.length > 0) document.getElementById('empty-state').style.display = 'none';
+  </script>
+</body>
+</html>
