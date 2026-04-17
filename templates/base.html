@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} | PawLife Guide</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+  <meta property="og:title" content="{{PAGE_TITLE}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="{{CANONICAL_URL}}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PawLife Guide">
+  <link rel="stylesheet" href="{{ASSETS_PATH}}assets/css/style.css">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J31FHEERN2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J31FHEERN2');
+  </script>
+  <!-- ADSENSE_PUBLISHER_SNIPPET_HERE -->
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="{{ASSETS_PATH}}index.html" class="logo">PawLife Guide</a>
+      <p class="tagline">The best tips and products for your pet</p>
+      <nav>
+        <a href="{{ASSETS_PATH}}index.html">Home</a>
+        <a href="{{ASSETS_PATH}}category/index.html">Categories</a>
+        <a href="{{ASSETS_PATH}}about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 48px 0 80px;">
+    {{PAGE_CONTENT}}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:white;">PawLife Guide</strong> &mdash; The best tips and products for your pet</p>
+      <p class="disclaimer">
+        PawLife Guide is a participant in the Amazon Services LLC Associates Program,
+        an affiliate advertising program designed to provide a means for sites to earn
+        advertising fees by advertising and linking to Amazon.com.
+      </p>
+      <nav class="footer-nav">
+        <a href="{{ASSETS_PATH}}privacy.html">Privacy Policy</a>
+        <a href="{{ASSETS_PATH}}disclaimer.html">Affiliate Disclaimer</a>
+        <a href="{{ASSETS_PATH}}contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="{{ASSETS_PATH}}assets/js/main.js"></script>
+</body>
+</html>

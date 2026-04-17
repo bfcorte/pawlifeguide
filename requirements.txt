@@ -1,0 +1,7 @@
+pytrends==4.9.2
+apscheduler==3.10.4
+python-amazon-paapi==1.0.4
+markdown==3.5.1
+beautifulsoup4==4.12.2
+requests==2.31.0
+Pillow==10.1.0

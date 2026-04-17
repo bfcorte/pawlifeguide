@@ -1,0 +1,14 @@
+<!-- Post Card Template — injected into index.html by publisher.py -->
+<!-- POST: {{SLUG}} -->
+<article class="post-card">
+  <div class="post-card-body">
+    <span class="category-badge">{{CATEGORY}}</span>
+    <h2><a href="posts/{{SLUG}}/index.html">{{TITLE}}</a></h2>
+    <p>{{META_DESCRIPTION}}</p>
+    <div class="post-meta">
+      <time datetime="{{DATE_ISO}}">{{DATE_FORMATTED}}</time>
+      &bull; {{READING_TIME}} read
+    </div>
+    <a href="posts/{{SLUG}}/index.html" class="btn-read-more">Read More →</a>
+  </div>
+</article>

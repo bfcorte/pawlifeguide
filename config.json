@@ -1,0 +1,47 @@
+{
+  "blog_identity": {
+    "niche": "pets",
+    "name": "PawLife Guide",
+    "tagline": "The best tips and products for your pet",
+    "url": "https://bfcorte.github.io/pawlifeguide",
+    "topic": "pets",
+    "tone": "friendly expert, like advice from a knowledgeable friend",
+    "target_audience": "US readers interested in pets",
+    "avoid_topics": [],
+    "amazon_categories": [
+      "Pet Supplies",
+      "Dog Supplies",
+      "Cat Supplies",
+      "Small Animal Supplies",
+      "Bird Supplies"
+    ],
+    "primary_color": "#F97316",
+    "accent_color": "#1E3A5F"
+  },
+  "apis": {
+    "amazon_access_key": "YOUR_AMAZON_ACCESS_KEY",
+    "amazon_secret_key": "YOUR_AMAZON_SECRET_KEY",
+    "amazon_associate_tag": "pawguidebf-20"
+  },
+  "seo": {
+    "google_analytics_id": "G-J31FHEERN2",
+    "adsense_publisher_id": "",
+    "adsense_installed": false,
+    "adsense_slots": {
+      "header": "",
+      "content_top": "",
+      "content_mid": "",
+      "sidebar": "",
+      "footer": ""
+    }
+  },
+  "publishing": {
+    "github_user": "bfcorte",
+    "github_repo": "pawlifeguide",
+    "auto_push": true,
+    "schedule_hour": 8,
+    "keywords_refresh_days": 30,
+    "keyword_reuse_cooldown_days": 90,
+    "keyword_annual_update_days": 365
+  }
+}

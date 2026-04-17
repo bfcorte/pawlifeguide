@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PawLife Guide</title>
+    <link>https://bfcorte.github.io/pawlifeguide/</link>
+    <description>The best tips and products for your pet</description>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Apr 2026 08:00:00 +0000</lastBuildDate>
+    <atom:link href="https://bfcorte.github.io/pawlifeguide/feed.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://bfcorte.github.io/pawlifeguide/assets/img/logo.png</url>
+      <title>PawLife Guide</title>
+      <link>https://bfcorte.github.io/pawlifeguide/</link>
+    </image>
+  <!-- New posts are injected above this line by publisher.py -->
+  </channel>
+</rss>

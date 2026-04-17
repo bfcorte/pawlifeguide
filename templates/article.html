@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}} | PawLife Guide</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="{{CANONICAL_URL}}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="PawLife Guide">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <script type="application/ld+json">{{SCHEMA_JSON_LD}}</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J31FHEERN2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-J31FHEERN2');
+  </script>
+
+  <!-- AdSense Publisher -->
+  <!-- ADSENSE_PUBLISHER_SNIPPET_HERE -->
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="../../index.html" class="logo">PawLife Guide</a>
+      <p class="tagline">The best tips and products for your pet</p>
+      <nav>
+        <a href="../../index.html">Home</a>
+        <a href="../../category/index.html">Categories</a>
+        <a href="../../about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ADSENSE SLOT: header -->
+  <div class="ad-slot" id="ad-header" data-slot="header">
+    [ADSENSE_HEADER_CODE_HERE]
+  </div>
+
+  <main class="container article-layout">
+    <article class="post-content">
+
+      <nav class="breadcrumb">
+        <a href="../../index.html">Home</a> &rsaquo;
+        <a href="../../category/{{CATEGORY}}/index.html">{{CATEGORY_TITLE}}</a> &rsaquo;
+        <span>{{TITLE}}</span>
+      </nav>
+
+      <div class="article-meta">
+        <time datetime="{{DATE_ISO}}">{{DATE_FORMATTED}}</time>
+        &bull; {{READING_TIME}} read
+        &bull; {{WORD_COUNT}} words
+      </div>
+
+      <!-- ADSENSE SLOT: after-intro (highest RPM) -->
+      <div class="ad-slot" id="ad-content-top" data-slot="content_top">
+        [ADSENSE_CONTENT_TOP_CODE_HERE]
+      </div>
+
+      {{ARTICLE_CONTENT}}
+
+      <!-- ADSENSE SLOT: mid-article -->
+      <div class="ad-slot" id="ad-content-mid" data-slot="content_mid">
+        [ADSENSE_CONTENT_MID_CODE_HERE]
+      </div>
+
+    </article>
+
+    <aside class="sidebar">
+      <div class="sidebar-widget">
+        <h3>🐾 About PawLife Guide</h3>
+        <p>Expert tips and honest product reviews for pet owners.</p>
+        <a href="../../about.html" class="btn-outline">About Us</a>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>🛒 Top Picks</h3>
+        <p>Our most-recommended products this month.</p>
+        <a href="../../index.html" class="btn-outline">See All →</a>
+      </div>
+
+      <!-- ADSENSE SLOT: sidebar sticky -->
+      <div class="ad-slot" id="ad-sidebar" data-slot="sidebar">
+        [ADSENSE_SIDEBAR_CODE_HERE]
+      </div>
+    </aside>
+  </main>
+
+  <!-- ADSENSE SLOT: before footer -->
+  <div class="ad-slot" id="ad-footer" data-slot="footer">
+    [ADSENSE_FOOTER_CODE_HERE]
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:white;">PawLife Guide</strong> &mdash; The best tips and products for your pet</p>
+      <p class="disclaimer">
+        PawLife Guide is a participant in the Amazon Services LLC Associates Program,
+        an affiliate advertising program designed to provide a means for sites to earn
+        advertising fees by advertising and linking to Amazon.com.
+      </p>
+      <nav class="footer-nav">
+        <a href="../../privacy.html">Privacy Policy</a>
+        <a href="../../disclaimer.html">Affiliate Disclaimer</a>
+        <a href="../../contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
