@@ -137,32 +137,58 @@ def search_products_paapi(search_terms: list[str], config: dict) -> list[dict]:
         return get_placeholder_products(search_terms[0] if search_terms else "pet product")
 
 
+def fetch_amazon_product_image(asin: str) -> str:
+    """Scrape the real product image URL from Amazon product page."""
+    import re
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+        response = requests.get(
+            f"https://www.amazon.com/dp/{asin}",
+            headers=headers,
+            timeout=10
+        )
+        # Extract main image URL from page source
+        match = re.search(r'"hiRes":"(https://m\.media-amazon\.com/images/I/[^"]+\.jpg)"', response.text)
+        if not match:
+            match = re.search(r'"large":"(https://m\.media-amazon\.com/images/I/[^"]+\.jpg)"', response.text)
+        if match:
+            return match.group(1)
+    except Exception as e:
+        log.warning(f"Could not fetch image for ASIN {asin}: {e}")
+    return ""
+
+
 def get_placeholder_products(keyword: str) -> list[dict]:
-    """Returns placeholder products when PAAPI is not configured."""
+    """Returns placeholder products when PAAPI is not configured.
+    NOTE: Replace ASINs and product details with real Amazon products.
+    After replacing, images will be fetched automatically from Amazon."""
     return [
         {
-            "asin": "B000000001",
+            "asin": "REPLACE_ASIN_1",
             "name": f"Top Rated {keyword.title()} — Editor's Choice",
             "rating": 4.7,
-            "reviews": 2840,
-            "image": "https://via.placeholder.com/200x200?text=Product+1",
-            "benefit": "Loved by thousands of pet owners. Excellent quality and durability.",
+            "reviews": 0,
+            "image": "",
+            "benefit": "Add real product details. Replace ASIN with actual Amazon ASIN.",
         },
         {
-            "asin": "B000000002",
+            "asin": "REPLACE_ASIN_2",
             "name": f"Best Budget {keyword.title()} — Great Value",
             "rating": 4.4,
-            "reviews": 1250,
-            "image": "https://via.placeholder.com/200x200?text=Product+2",
-            "benefit": "Perfect balance of quality and affordability. Prime eligible.",
+            "reviews": 0,
+            "image": "",
+            "benefit": "Add real product details. Replace ASIN with actual Amazon ASIN.",
         },
         {
-            "asin": "B000000003",
+            "asin": "REPLACE_ASIN_3",
             "name": f"Premium {keyword.title()} — Professional Grade",
             "rating": 4.8,
-            "reviews": 890,
-            "image": "https://via.placeholder.com/200x200?text=Product+3",
-            "benefit": "Premium choice for pet owners who want the absolute best.",
+            "reviews": 0,
+            "image": "",
+            "benefit": "Add real product details. Replace ASIN with actual Amazon ASIN.",
         },
     ]
 
@@ -184,6 +210,13 @@ def inject_products(slug: str, config: dict) -> str:
     products = search_products_paapi(search_terms, config)
 
     associate_tag = config["apis"]["amazon_associate_tag"]
+
+    # Fetch real images for any product missing one
+    for p in products:
+        if not p.get("image") and p.get("asin") and not p["asin"].startswith("REPLACE"):
+            log.info(f"Fetching image for ASIN {p['asin']}...")
+            p["image"] = fetch_amazon_product_image(p["asin"])
+
     product_index = 0
 
     def replace_card(match):

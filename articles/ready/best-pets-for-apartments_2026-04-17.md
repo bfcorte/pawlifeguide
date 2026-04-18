@@ -41,7 +41,7 @@ We've done the research so you don't have to. Every pick on this list has:
 Here's a quick overview before we dive into the details.
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/71H5ca1oqCL._AC_SL1500_.jpg" alt="Bedsure Orthopedic Dog Bed" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/81LrJEODtrL._AC_SX679_.jpg" alt="Bedsure Orthopedic Dog Bed" loading="lazy" width="200">
   <div class="product-info">
     <h4>Bedsure Orthopedic Dog Bed — Removable Washable Cover, Waterproof</h4>
     <div class="stars">★★★★★ 4.6 (15,000+ reviews)</div>
@@ -57,7 +57,7 @@ Here's a quick overview before we dive into the details.
 </div>
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/61W0jFn2MHL._AC_SL1500_.jpg" alt="Kenmore Featherlite Vacuum" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/61R+HmyysfL._AC_SY879_.jpg" alt="Kenmore Featherlite Vacuum" loading="lazy" width="200">
   <div class="product-info">
     <h4>Kenmore DU4080 Featherlite Lift-Up Bagless Vacuum — Pet Hair Edition</h4>
     <div class="stars">★★★★☆ 4.3 (2,100+ reviews)</div>
@@ -73,7 +73,7 @@ Here's a quick overview before we dive into the details.
 </div>
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL1500_.jpg" alt="Ziwi Peak Beef Dog Food" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/81J4g9LqHwL._AC_SX679_.jpg" alt="Ziwi Peak Beef Dog Food" loading="lazy" width="200">
   <div class="product-info">
     <h4>Ziwi Peak Air-Dried Dog Food — Beef Recipe, All Breeds</h4>
     <div class="stars">★★★★★ 4.7 (4,500+ reviews)</div>
@@ -116,7 +116,7 @@ If a product can't be stored or folded when not in use, it will permanently occu
 ### 1. Best Overall — Bedsure Orthopedic Dog Bed
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/71H5ca1oqCL._AC_SL1500_.jpg" alt="Bedsure Orthopedic Dog Bed" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/81LrJEODtrL._AC_SX679_.jpg" alt="Bedsure Orthopedic Dog Bed" loading="lazy" width="200">
   <div class="product-info">
     <h4>Bedsure Orthopedic Dog Bed</h4>
     <div class="stars">★★★★★ 4.6 (15,000+ reviews)</div>
@@ -152,7 +152,7 @@ If a product can't be stored or folded when not in use, it will permanently occu
 ### 2. Best for Pet Hair — Kenmore Featherlite Vacuum
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/61W0jFn2MHL._AC_SL1500_.jpg" alt="Kenmore Featherlite Vacuum" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/61R+HmyysfL._AC_SY879_.jpg" alt="Kenmore Featherlite Vacuum" loading="lazy" width="200">
   <div class="product-info">
     <h4>Kenmore DU4080 Featherlite Vacuum</h4>
     <div class="stars">★★★★☆ 4.3 (2,100+ reviews)</div>
@@ -186,7 +186,7 @@ If a product can't be stored or folded when not in use, it will permanently occu
 ### 3. Best Premium Food — Ziwi Peak Air-Dried Dog Food
 
 <div class="product-card">
-  <img src="https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL1500_.jpg" alt="Ziwi Peak Beef Dog Food" loading="lazy" width="200">
+  <img src="https://m.media-amazon.com/images/I/81J4g9LqHwL._AC_SX679_.jpg" alt="Ziwi Peak Beef Dog Food" loading="lazy" width="200">
   <div class="product-info">
     <h4>Ziwi Peak Air-Dried Dog Food — Beef</h4>
     <div class="stars">★★★★★ 4.7 (4,500+ reviews)</div>
