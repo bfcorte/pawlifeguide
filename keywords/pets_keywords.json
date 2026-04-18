@@ -130,7 +130,17 @@
         "best how to train a cat",
         "how to train a cat recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "how-to-train-a-cat",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "how to cycle a fish tank",
