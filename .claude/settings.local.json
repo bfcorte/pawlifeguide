@@ -18,7 +18,20 @@
       "Bash(pip install *)",
       "Bash(python scripts/run_pipeline.py --keyword \"best pets for apartments\" --angle listicle)",
       "Bash(python -c ' *)",
-      "Bash(python scripts/publisher.py --slug best-pets-for-apartments)"
+      "Bash(python scripts/publisher.py --slug best-pets-for-apartments)",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" \"https://m.media-amazon.com/images/I/71H5ca1oqCL._AC_SL500_.jpg\" -o \"bedsure-dog-bed.jpg\" --silent)",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" \"https://m.media-amazon.com/images/I/61W0jFn2MHL._AC_SL500_.jpg\" -o \"kenmore-vacuum.jpg\" --silent)",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" \"https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL500_.jpg\" -o \"ziwi-peak-food.jpg\" --silent)",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\" \"https://images-na.ssl-images-amazon.com/images/P/B089RGDQBB.01._SCLZZZZZZZ_.jpg\" -o \"bedsure-dog-bed.jpg\" --silent)",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/71H5ca1oqCL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/81LrJEODtrL._AC_SX679_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/articles/ready/best-pets-for-apartments_2026-04-17.md\")",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/61W0jFn2MHL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/61R+HmyysfL._AC_SY879_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/articles/ready/best-pets-for-apartments_2026-04-17.md\")",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/81J4g9LqHwL._AC_SX679_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/articles/ready/best-pets-for-apartments_2026-04-17.md\")",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/71H5ca1oqCL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/81LrJEODtrL._AC_SX679_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/blog/posts/best-pets-for-apartments/index.html\")",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/61W0jFn2MHL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/61R+HmyysfL._AC_SY879_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/blog/posts/best-pets-for-apartments/index.html\")",
+      "Bash(sed -i 's|https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/81J4g9LqHwL._AC_SX679_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/blog/posts/best-pets-for-apartments/index.html\")",
+      "Bash(python scripts/run_pipeline.py --keyword \"best interactive cat toys\" --angle listicle)",
+      "WebFetch(domain:www.amazon.com)",
+      "Bash(python scripts/publisher.py --slug \"best-interactive-cat-toys\")"
     ]
   }
 }

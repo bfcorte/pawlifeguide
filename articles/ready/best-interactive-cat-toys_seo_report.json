@@ -1,0 +1,38 @@
+{
+  "slug": "best-interactive-cat-toys",
+  "keyword": "best interactive cat toys",
+  "score": 83,
+  "passed": 5,
+  "total": 6,
+  "checks": {
+    "title": {
+      "pass": true,
+      "value": "7 Best Interactive Cat Toys in 2026 (Tested & Reviewed)"
+    },
+    "word_count": {
+      "pass": true,
+      "value": 1824,
+      "issue": null
+    },
+    "quick_answer": {
+      "pass": true,
+      "issue": null
+    },
+    "disclaimer": {
+      "pass": true,
+      "issue": null
+    },
+    "faq": {
+      "pass": true,
+      "value": 9,
+      "issue": null
+    },
+    "h2_count": {
+      "pass": false,
+      "value": 11,
+      "issue": "11 H2 sections (should be 4-10)"
+    }
+  },
+  "schema_json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Article\",\n  \"headline\": \"7 Best Interactive Cat Toys in 2026 (Tested & Reviewed)\",\n  \"description\": \"Looking for the best best interactive cat toys? We tested the top options so you don't have to. See our expert picks and save time. Check prices on Amazon.\",\n  \"author\": {\n    \"@type\": \"Organization\",\n    \"name\": \"PawLife Guide\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"PawLife Guide\",\n    \"url\": \"https://bfcorte.github.io/pawlifeguide\"\n  },\n  \"datePublished\": \"2026-04-17T21:47:14.391735\",\n  \"dateModified\": \"2026-04-17T21:47:14.450424\",\n  \"mainEntityOfPage\": {\n    \"@type\": \"WebPage\",\n    \"@id\": \"https://bfcorte.github.io/pawlifeguide/posts/best-interactive-cat-toys\"\n  }\n}",
+  "generated_at": "2026-04-17T21:47:14.450424"
+}
