@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth *)",
+      "Bash(winget --version)",
+      "Bash(winget install *)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" auth status)",
+      "Read(//c/Users/Bombc/AppData/Roaming/GitHub CLI/**)",
+      "Bash(cmd.exe /c \"dir %APPDATA% | findstr /i git\")",
+      "Bash(cmd.exe /c \"cmdkey /list | findstr /i github\")",
+      "Bash(cmd.exe /c '\"%LOCALAPPDATA%\\\\GitHub CLI\\\\bin\\\\gh.exe\" auth status 2>&1')",
+      "Bash(cmd.exe /c '\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" auth status')",
+      "Bash(cmd.exe /c \"echo %GH_TOKEN% %GITHUB_TOKEN%\")",
+      "Bash(cmd.exe /c '\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" repo create pawlifeguide --public --description \"The best tips and products for your pet\" 2>&1')",
+      "Bash(python -m http.server 8080)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo create pawlifeguide --public --description \"The best tips and products for your pet\")",
+      "Bash(python -c \"import pytrends; print\\('ok'\\)\")",
+      "Bash(pip install *)",
+      "Bash(python scripts/run_pipeline.py --keyword \"best pets for apartments\" --angle listicle)",
+      "Bash(python -c ' *)",
+      "Bash(python scripts/publisher.py --slug best-pets-for-apartments)"
+    ]
+  }
+}
