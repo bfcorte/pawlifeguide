@@ -21,7 +21,17 @@
         "best cat food for indoor cats",
         "cat food for indoor cats recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-cat-food-for-indoor-cats",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "pets",
@@ -37,7 +47,17 @@
         "best pets",
         "pets recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-pets-for-apartments",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best pets",
@@ -58,7 +78,17 @@
         "best pets",
         "pets recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-pets-for-apartments",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best dog treats for training",
@@ -223,7 +253,17 @@
         "best interactive cat toys for indoor cats",
         "interactive cat toys for indoor cats recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-interactive-cat-toys",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "what is the best dog food for large breeds",
@@ -417,7 +457,17 @@
         "best interactive cat toys",
         "interactive cat toys recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-interactive-cat-toys",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best dog toys for aggressive chewers",
