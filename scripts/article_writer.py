@@ -65,12 +65,14 @@ def _strip_leading_superlatives(keyword: str) -> str:
 def build_title(keyword: str, angle: str) -> str:
     year = datetime.now().year
     kw_clean = _strip_leading_superlatives(keyword)
+    # Para how-to: remove "how to" do início para não duplicar no título
+    kw_action = re.sub(r'^how\s+to\s+', '', keyword.strip(), flags=re.IGNORECASE).strip().title()
     kw_cap = keyword.strip().title()
     n = random.choice(COUNT_OPTIONS)
 
     templates = {
         "listicle":      f"{n} Best {kw_clean} in {year} (Tested & Reviewed)",
-        "how-to":        f"How to {kw_cap}: Step-by-Step Guide ({year})",
+        "how-to":        f"How to {kw_action}: Step-by-Step Guide ({year})",
         "comparison":    f"{kw_cap}: Which One Is Really Worth It in {year}?",
         "single-review": f"The Best {kw_clean} in {year}: In-Depth Review",
         "buyers-guide":  f"How to Choose the Best {kw_clean} ({year} Buyer's Guide)",
