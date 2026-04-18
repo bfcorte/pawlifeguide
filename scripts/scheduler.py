@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Scheduler — Runs the daily blog pipeline at 08:00 AM.
+Scheduler — Creates 3 draft articles per day: 08:00, 12:00, 16:00.
+Articles are created as drafts in articles/YYYY-MM-DD/ and NEVER auto-published.
+Each draft awaits explicit /publish review from the user.
 Usage: python scripts/scheduler.py
        python scripts/scheduler.py &  (background)
 """
@@ -27,11 +29,15 @@ def load_config() -> dict:
     return json.loads(Path("config.json").read_text())
 
 
-def daily_post_job() -> None:
+def daily_post_job(slot: int = 1) -> None:
+    """Run one article draft cycle. slot=1/2/3 for the three daily runs."""
     log.info("=" * 50)
-    log.info("DAILY POST JOB STARTED")
+    log.info(f"DAILY POST JOB STARTED — slot {slot}/3")
     config = load_config()
     topic = config["blog_identity"]["topic"]
+    today = datetime.now().strftime("%Y-%m-%d")
+    day_dir = Path(f"articles/{today}")
+    day_dir.mkdir(parents=True, exist_ok=True)
 
     try:
         kw_file = Path(f"keywords/{topic.replace(' ', '_')}_keywords.json")
@@ -91,12 +97,17 @@ def daily_post_job() -> None:
             out = json.loads(pipeline.stdout)
             log.info(f"SUCCESS — Draft: {out['draft_path']}")
             log.info(f"Title: {out['title']}")
-            log.info("Awaiting /publish command")
+            log.info("Draft saved to articles/%s/ — awaiting /publish review", today)
+
+            # Copy draft to day folder for review
+            import shutil
+            for f_path in Path("articles/draft").glob(f"{out['slug']}*"):
+                shutil.copy2(f_path, day_dir / f_path.name)
 
             with open("logs/activity.log", "a") as f:
                 f.write(
-                    f"{datetime.now()} | DRAFT READY | "
-                    f"{out['slug']} | {out['title']}\n"
+                    f"{datetime.now()} | DRAFT READY (slot {slot}) | "
+                    f"{out['slug']} | {out['title']} | review at articles/{today}/\n"
                 )
         else:
             log.error(f"Pipeline error: {pipeline.stderr}")
@@ -140,11 +151,24 @@ if __name__ == "__main__":
 
     scheduler = BlockingScheduler()
 
+    # 3 draft slots per day: 08:00, 12:00, 16:00
     scheduler.add_job(
-        daily_post_job,
+        lambda: daily_post_job(slot=1),
         CronTrigger(hour=schedule_hour, minute=0),
-        id="daily_post",
-        name="Daily Blog Post",
+        id="daily_post_1",
+        name="Daily Draft Slot 1 (08:00)",
+    )
+    scheduler.add_job(
+        lambda: daily_post_job(slot=2),
+        CronTrigger(hour=12, minute=0),
+        id="daily_post_2",
+        name="Daily Draft Slot 2 (12:00)",
+    )
+    scheduler.add_job(
+        lambda: daily_post_job(slot=3),
+        CronTrigger(hour=16, minute=0),
+        id="daily_post_3",
+        name="Daily Draft Slot 3 (16:00)",
     )
     scheduler.add_job(
         monthly_refresh,
@@ -153,7 +177,8 @@ if __name__ == "__main__":
         name="Monthly Keyword Refresh",
     )
 
-    log.info(f"Scheduler running. Daily posts at {schedule_hour:02d}:00.")
+    log.info("Scheduler running. 3 drafts/day at 08:00, 12:00, 16:00.")
+    log.info("Drafts go to articles/YYYY-MM-DD/ — publish manually with /publish [slug]")
     log.info("Press Ctrl+C to stop.")
 
     try:

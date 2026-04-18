@@ -31,7 +31,12 @@
       "Bash(sed -i 's|https://m.media-amazon.com/images/I/81hT0GKABQL._AC_SL1500_.jpg|https://m.media-amazon.com/images/I/81J4g9LqHwL._AC_SX679_.jpg|g' \"c:/Users/Bombc/Documents/Blogs/blog-pets/blog/posts/best-pets-for-apartments/index.html\")",
       "Bash(python scripts/run_pipeline.py --keyword \"best interactive cat toys\" --angle listicle)",
       "WebFetch(domain:www.amazon.com)",
-      "Bash(python scripts/publisher.py --slug \"best-interactive-cat-toys\")"
+      "Bash(python scripts/publisher.py --slug \"best-interactive-cat-toys\")",
+      "Bash(xargs sed *)",
+      "Bash(cp articles/ready/best-pets-for-apartments_2026-04-17.md articles/2026-04-17/)",
+      "Bash(cp articles/ready/best-pets-for-apartments_2026-04-17_meta.json articles/2026-04-17/)",
+      "Bash(cp articles/ready/best-interactive-cat-toys_2026-04-17.md articles/2026-04-17/)",
+      "Bash(cp articles/ready/best-interactive-cat-toys_2026-04-17_meta.json articles/2026-04-17/)"
     ]
   }
 }

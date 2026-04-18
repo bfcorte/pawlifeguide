@@ -294,8 +294,8 @@ def ensure_category_page(category: str, config: dict) -> None:
   <meta name="description" content="Best tips and product reviews for {category.lower()} owners. Curated by PawLife Guide.">
   <link rel="canonical" href="{url}/category/{slug}/">
   <link rel="stylesheet" href="../../assets/css/style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J31FHEERN2"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-J31FHEERN2');</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id={config['seo']['google_analytics_id']}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{config['seo']['google_analytics_id']}');</script>
 </head>
 <body>
   <header class="site-header">
