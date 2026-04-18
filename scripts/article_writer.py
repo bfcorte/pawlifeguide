@@ -6,6 +6,7 @@ Usage: python scripts/article_writer.py --keyword "best dog food" --angle listic
 
 import json
 import re
+import random
 import argparse
 import logging
 from datetime import datetime
@@ -23,84 +24,142 @@ DISCLAIMER = (
     "This doesn't affect our recommendations.*\n\n"
 )
 
+# ── Category detection ──────────────────────────────────────────────────────
+CATEGORY_MAP = {
+    "cats":       ["cat", "kitten", "feline", "catnip", "litter", "hairball", "indoor cat"],
+    "dogs":       ["dog", "puppy", "canine", "leash", "collar", "bark", "training dog",
+                   "dog food", "dog bed", "dog toy", "dog treat", "golden retriever",
+                   "labrador", "bulldog", "poodle", "shepherd"],
+    "birds":      ["bird", "parrot", "canary", "budgie", "cockatiel", "cage", "avian",
+                   "feathers", "perch", "bird food"],
+    "fish":       ["fish", "aquarium", "tank", "goldfish", "betta", "tropical", "cichlid",
+                   "filter", "aquatic", "freshwater", "saltwater", "reef"],
+    "small-pets": ["hamster", "rabbit", "guinea pig", "gerbil", "chinchilla", "ferret",
+                   "hedgehog", "small pet", "small animal", "cage bedding"],
+    "guides":     ["how to train", "how to care", "how to groom", "guide", "tips",
+                   "behavior", "health", "vet", "disease", "symptoms"],
+}
 
-def load_config() -> dict:
-    return json.loads(Path("config.json").read_text())
+
+def detect_category(keyword: str) -> str:
+    kw = keyword.lower()
+    for cat, terms in CATEGORY_MAP.items():
+        if any(t in kw for t in terms):
+            return cat
+    return "pets"
 
 
-def slugify(text: str) -> str:
-    text = text.lower().strip()
-    text = re.sub(r"[^\w\s-]", "", text)
-    text = re.sub(r"[\s_-]+", "-", text)
-    return text.strip("-")
+# ── Title generation ─────────────────────────────────────────────────────────
+COUNT_OPTIONS = [5, 7, 9, 10, 12]
 
 
 def _strip_leading_superlatives(keyword: str) -> str:
-    """Remove leading 'best', 'top', 'cheap' etc. to avoid double superlatives in titles."""
-    stops = ("best ", "top ", "cheap ", "affordable ", "recommended ")
+    stops = ("best ", "top ", "cheap ", "affordable ", "recommended ", "how to ")
     kw = keyword.lower().strip()
     for s in stops:
         if kw.startswith(s):
             kw = kw[len(s):]
-    return kw.title()
+    return kw.strip().title()
 
 
 def build_title(keyword: str, angle: str) -> str:
     year = datetime.now().year
     kw_clean = _strip_leading_superlatives(keyword)
-    kw_cap = keyword.title()  # original for non-prefixed templates
+    kw_cap = keyword.strip().title()
+    n = random.choice(COUNT_OPTIONS)
 
     templates = {
-        "listicle": f"7 Best {kw_clean} in {year} (Tested & Reviewed)",
-        "how-to": f"How to Choose the Best {kw_clean}: Complete Guide ({year})",
-        "comparison": f"{kw_cap} Compared: Which One Is Worth It in {year}?",
+        "listicle":      f"{n} Best {kw_clean} in {year} (Tested & Reviewed)",
+        "how-to":        f"How to {kw_cap}: Step-by-Step Guide ({year})",
+        "comparison":    f"{kw_cap}: Which One Is Really Worth It in {year}?",
         "single-review": f"The Best {kw_clean} in {year}: In-Depth Review",
-        "buyers-guide": f"How to Choose the Best {kw_clean} ({year} Buyer's Guide)",
-        "budget": f"Best Affordable {kw_clean} in {year} (Under $50)",
-        "premium": f"Best Premium {kw_clean} Worth Every Penny in {year}",
-        "seasonal": f"Best {kw_clean} for This Season ({year})",
+        "buyers-guide":  f"How to Choose the Best {kw_clean} ({year} Buyer's Guide)",
+        "budget":        f"Best Affordable {kw_clean} in {year} (Under $50)",
+        "premium":       f"Best Premium {kw_clean} Worth Every Penny in {year}",
+        "seasonal":      f"Best {kw_clean} for This Season ({year})",
         "annual_update": f"Best {kw_clean} in {year} (Updated)",
+        "tips":          f"{n} Expert Tips for {kw_cap} That Actually Work ({year})",
+        "care-guide":    f"Complete {kw_cap} Guide: Everything You Need to Know ({year})",
     }
-    return templates.get(angle, f"Best {kw_clean} — Complete Guide {year}")
+    return templates.get(angle, f"{n} Best {kw_clean} — Complete Guide {year}")
 
 
-def build_meta_description(keyword: str, title: str) -> str:
-    desc = (
-        f"Looking for the best {keyword.lower()}? "
-        f"We tested the top options so you don't have to. "
-        f"See our expert picks and save time. Check prices on Amazon."
-    )
+def build_meta_description(keyword: str, title: str, angle: str) -> str:
+    kw = keyword.lower()
+    templates = {
+        "listicle":     f"Best {kw} in {datetime.now().year} — tested, rated 4.2+ stars, Prime eligible. Expert picks with pros, cons, and current Amazon prices.",
+        "how-to":       f"Learn how to {kw} step-by-step. Expert advice, common mistakes to avoid, and the best products for the job.",
+        "comparison":   f"Comparing the top {kw} options head-to-head. Real data, honest pros & cons, and a clear winner for each use case.",
+        "buyers-guide": f"How to choose the best {kw} — key criteria, red flags, and expert-picked recommendations for {datetime.now().year}.",
+        "budget":       f"Best affordable {kw} in {datetime.now().year} — quality options under $50 with 4.2+ stars and thousands of verified reviews.",
+        "tips":         f"Expert tips for {kw} that make a real difference. Advice from experienced pet owners and veterinary guidance.",
+        "care-guide":   f"Complete guide to {kw} — everything from basics to advanced care, product recommendations, and common mistakes.",
+    }
+    desc = templates.get(angle, f"Best {kw} in {datetime.now().year} — expert picks, honest reviews, and current Amazon prices. All Prime eligible.")
     return desc[:160]
 
 
+# ── Smart intro hooks by topic type ─────────────────────────────────────────
+def build_intro(keyword: str, angle: str, category: str) -> str:
+    kw = keyword.lower()
+    hooks = {
+        "listicle": [
+            f"Finding the right {kw} is harder than it should be — the options are overwhelming, the reviews are inconsistent, and the wrong choice wastes your money.",
+            f"Not all {kw} are built the same. After analyzing thousands of real reviews, we found the options that consistently deliver — and the ones to skip entirely.",
+            f"The {kw} market is flooded with options ranging from genuinely great to dangerously poor quality. Here's how to cut through the noise.",
+        ],
+        "how-to": [
+            f"Most pet owners get {kw} wrong — not because they don't care, but because nobody explains the counterintuitive parts. This guide fixes that.",
+            f"Learning {kw} properly from the start saves you months of trial and error. Here's the approach that actually works, step by step.",
+        ],
+        "comparison": [
+            f"Two products, one decision — and the wrong pick is a waste of money. We compare the leading {kw} options head-to-head with real data.",
+            f"The difference between the top {kw} options isn't always obvious from the product listings. Here's what separates them in real-world use.",
+        ],
+        "buyers-guide": [
+            f"Before buying {kw}, there are five questions most people never ask — and the answers change everything. This guide walks you through them.",
+            f"The {kw} buying process trips up even experienced pet owners. Here's exactly what to look for, what to avoid, and what actually matters.",
+        ],
+        "tips": [
+            f"Most advice about {kw} covers the obvious. These tips come from analyzing thousands of owner experiences — the non-obvious things that actually make a difference.",
+            f"Expert-level {kw} knowledge isn't complicated — but it is specific. Here are the tips that separate experienced owners from beginners.",
+        ],
+        "care-guide": [
+            f"A complete guide to {kw} — from the absolute basics through advanced techniques. Whether you're starting from scratch or filling knowledge gaps, this covers it all.",
+        ],
+    }
+    options = hooks.get(angle, hooks["listicle"])
+    return random.choice(options)
+
+
+# ── Article body builder ─────────────────────────────────────────────────────
 def build_article(keyword: str, angle: str, config: dict) -> str:
     identity = config["blog_identity"]
     title = build_title(keyword, angle)
     year = datetime.now().year
+    category = detect_category(keyword)
+    kw = keyword.lower()
+    hook = build_intro(keyword, angle, category)
 
-    intro_hooks = {
-        "listicle": f"Finding the right {keyword.lower()} can feel overwhelming — there are hundreds of options and the reviews online are all over the place.",
-        "how-to": f"Choosing the best {keyword.lower()} isn't as simple as picking the first result on Amazon. The wrong choice can cost you time, money, and frustration.",
-        "comparison": f"Two products, one decision. We break down the most popular {keyword.lower()} options side by side so you know exactly which one fits your situation.",
-        "buyers-guide": f"Before spending your money on {keyword.lower()}, there are a few key things you need to know. Most people skip these — and regret it.",
-        "budget": f"You don't have to spend a fortune to get a great {keyword.lower()}. We found the best affordable options that actually deliver.",
-        "premium": f"When only the best will do, {keyword.lower()} choices matter. We found the premium options that are genuinely worth the investment.",
-        "seasonal": f"The right {keyword.lower()} makes all the difference this season. Here are the top picks that pet owners love right now.",
-        "annual_update": f"We've updated our {keyword.lower()} recommendations for {year} with new products, current prices, and fresh reviews.",
-    }
+    # Quick answer varies by angle
+    if angle in ("how-to", "care-guide", "tips"):
+        quick_answer = f"The most important thing about {kw} is getting the fundamentals right first. Skip the shortcuts — start with the basics in Section 1 below."
+    elif angle == "comparison":
+        quick_answer = f"The better option depends on your specific situation. Scroll to the comparison table for the side-by-side breakdown — and our clear recommendation at the end."
+    else:
+        quick_answer = f"Our #1 pick for {kw} in {year} is highly rated by thousands of verified buyers and available on Amazon Prime. See the full details below."
 
-    hook = intro_hooks.get(angle, intro_hooks["listicle"])
-
+    # Build the article
     article = f"""# {title}
 
 {DISCLAIMER}
 
 {hook}
 
-After spending hours researching and testing, we've narrowed down the best options for {identity['target_audience'].lower()}. Whether you're a first-time pet owner or a seasoned pro, this guide has you covered.
+After in-depth research covering thousands of verified reviews and consulting pet care guidelines, we've narrowed down what actually works for {identity['target_audience'].lower()}. This guide cuts straight to what matters.
 
 <div class="quick-answer">
-<strong>Quick Answer:</strong> The best {keyword.lower()} in {year} is one that balances quality, safety, and value. Our top pick is highly rated by thousands of pet owners and available on Amazon Prime. See our #1 recommendation below.
+<strong>Quick Answer:</strong> {quick_answer}
 </div>
 
 ## Table of Contents
@@ -109,6 +168,7 @@ After spending hours researching and testing, we've narrowed down the best optio
 - [What to Look For](#what-to-look-for)
 - [Detailed Reviews](#detailed-reviews)
 - [Comparison Table](#comparison-table)
+- [Things to Avoid](#things-to-avoid)
 - [FAQ](#faq)
 - [Final Verdict](#final-verdict)
 
@@ -116,19 +176,19 @@ After spending hours researching and testing, we've narrowed down the best optio
 
 ## Why This Matters
 
-Choosing the right {keyword.lower()} directly impacts your pet's health, comfort, and happiness. With so many options on the market, it's easy to end up with something that looks good but underdelivers.
+The wrong {kw} doesn't just waste money — it can affect your pet's health, comfort, and behavior. With hundreds of options on the market, the difference between a great pick and a mediocre one isn't always visible from product photos.
 
-We've done the research so you don't have to. Every pick on this list has:
-- A rating of **4.2 stars or higher** on Amazon
-- **150+ verified reviews** from real pet owners
-- **Amazon Prime** eligibility for fast, free shipping
-- Proven track record of quality and safety
+Here's what our selection criteria guarantee:
+- **4.2 stars or higher** with at least 150 verified Amazon reviews
+- **Amazon Prime** eligibility for reliable, fast shipping
+- **Pet-safe materials** — no toxic chemicals or cheap construction
+- **Proven real-world performance** — not just good marketing
 
 ---
 
 ## Our Top Picks
 
-Here's a quick overview before we dive into the details.
+Quick overview before we get into the details.
 
 [PRODUCT_CARD]
 
@@ -140,22 +200,22 @@ Here's a quick overview before we dive into the details.
 
 ## What to Look For
 
-Before buying, consider these key factors:
+Before buying, these are the factors that actually separate good {kw} from the rest:
 
-### 1. Safety & Materials
-Always check that the product uses pet-safe, non-toxic materials. Look for certifications where applicable.
+### 1. Quality of Materials
+The single biggest predictor of long-term satisfaction. Cheap materials look fine at first and degrade fast. Focus on what reviewers say after 3+ months of use, not just initial impressions.
 
-### 2. Size & Fit
-What works for a large dog may not suit a small cat. Always check the size guide before ordering.
+### 2. Right Size for Your Pet
+{kw.title()} that fits a large dog won't suit a small cat, and vice versa. Always check size specifications against your pet's measurements before ordering. Incorrect sizing is the #1 avoidable mistake.
 
-### 3. Durability
-Pets can be rough on their gear. Read reviews specifically mentioning how long the product lasts.
+### 3. Ease of Cleaning
+Pets are messy. Products that are difficult to clean get used less frequently, which defeats the purpose. Look for removable covers, machine-washable options, or wipe-clean surfaces depending on the product type.
 
-### 4. Value for Money
-Price alone doesn't determine quality. The best {keyword.lower()} balances cost and performance — not just the cheapest or most expensive option.
+### 4. Safety Standards
+Check for non-toxic material certifications where applicable. For food-contact products, look for FDA-compliant materials. For bedding and toys, avoid small parts that can be swallowed.
 
-### 5. Ease of Use
-The easier it is for you to use, the more consistently your pet will benefit from it.
+### 5. Value Over Time
+The cheapest option rarely saves money long-term if it needs replacement every few months. Calculate cost-per-year, not just upfront price.
 
 ---
 
@@ -165,173 +225,152 @@ The easier it is for you to use, the more consistently your pet will benefit fro
 
 [PRODUCT_CARD]
 
-**Why we love it:** This option consistently earns top marks from pet owners for its combination of quality, durability, and price. Thousands of {identity['target_audience'].lower().replace('us readers interested in ', '')} owners swear by it.
+**Why we love it:** This option earns top marks across every metric we track — durability, safety, ease of use, and long-term owner satisfaction. Thousands of verified buyers rate it as their go-to choice for {kw}.
 
 **Pros:**
-- High quality materials
-- Easy to clean
-- Comes in multiple sizes
-- Ships fast with Prime
+- Premium materials that hold up to daily use
+- Easy to clean and maintain
+- Available in multiple sizes
+- Ships within 2 days with Prime
 
 **Cons:**
-- Slightly pricier than budget alternatives
-- May take a few days for pets to adjust
+- Premium price vs. budget alternatives
+- Some pets need a few days to adjust
 
-**Best for:** Most pet owners looking for a reliable, well-reviewed option.
+**Best for:** Pet owners who want a reliable, well-tested option and don't want to replace it every year.
 
 > *Prices change frequently — check current deals on Amazon.*
 
 ---
 
-### 2. Best Budget Option
+### 2. Best Value
 
 [PRODUCT_CARD]
 
-**Why we love it:** You don't have to break the bank for quality. This pick delivers excellent value at a fraction of the cost of premium options.
-
-**Best for:** First-time pet owners or those on a budget.
-
----
-
-### 3. Best Premium Option
-
-[PRODUCT_CARD]
-
-**Why we love it:** If you want the absolute best, this is it. Premium materials, exceptional durability, and top-rated by professionals.
-
-**Best for:** Pet owners who want the very best, no compromises.
-
----
-
-### 4. Best for Small Spaces
-
-[PRODUCT_CARD]
-
-**Why we love it:** Designed with compact living in mind. Works perfectly in apartments, condos, and small homes where space is at a premium.
+**Why we love it:** The best-performing option in its price range. Delivers results that compete with products costing twice as much. For first-time buyers or those managing multiple pets, this is the smart choice.
 
 **Pros:**
-- Compact and lightweight
-- Easy to store when not in use
-- Great for small breeds and apartment pets
+- Excellent performance for the price
+- Consistently rated 4.2+ stars by hundreds of buyers
+- Prime eligible — fast, reliable shipping
 
 **Cons:**
-- May not suit larger pets
+- Slightly fewer premium materials than our top pick
+- Limited size options in some variants
 
-**Best for:** City dwellers and apartment owners.
-
-> *Prices change frequently — check current deals on Amazon.*
+**Best for:** First-time pet owners, those on a budget, or anyone managing multiple pets simultaneously.
 
 ---
 
-### 5. Best Eco-Friendly Option
+### 3. Best Premium
 
 [PRODUCT_CARD]
 
-**Why we love it:** Made from sustainable, pet-safe materials. A great choice for environmentally conscious pet owners who don't want to compromise on quality.
+**Why we love it:** When you want the absolute best and price is secondary, this is the answer. Professional-grade materials, longer lifespan, and measurably better performance in the areas that matter most for {kw}.
 
 **Pros:**
-- Sustainable materials
-- Non-toxic and pet-safe
-- Durable construction
+- Industry-leading build quality
+- Highest owner satisfaction ratings in its class
+- Worth the premium price for long-term use
 
-**Best for:** Eco-conscious pet owners.
+**Cons:**
+- Highest price point on this list
+- May be overkill for casual or occasional use
 
----
+**Best for:** Experienced owners who have tried the budget options and want to invest in something that genuinely lasts.
 
-## Things to Avoid
-
-Not all products are created equal. Here are some red flags to watch for when shopping:
-
-- **No verified reviews** — If a product has fewer than 50 reviews, it hasn't been tested enough by real pet owners.
-- **Vague ingredient or material lists** — Legitimate products are always transparent about what they're made of.
-- **Ratings below 4 stars** — With thousands of pet products available, there's no reason to settle for less.
-- **No return policy** — Reputable sellers always offer at least 30-day returns.
-- **Suspiciously low prices** — If it seems too good to be true, it usually is. Cheap materials can be harmful to your pet.
-
----
-
-## How We Chose These Products
-
-Our selection process is rigorous and unbiased. Here's exactly how we evaluate every product:
-
-1. **Amazon rating** — Must be 4.2 stars or higher with at least 150 verified reviews
-2. **Review analysis** — We read through hundreds of reviews, focusing on long-term durability and real-world performance
-3. **Price-to-value ratio** — We compare price points across categories to identify genuine value
-4. **Safety standards** — We verify that materials are pet-safe and non-toxic
-5. **Availability** — All products must be available on Amazon Prime for reliable, fast delivery
-
-We never accept payment to feature a product. Our recommendations are 100% independent.
+> *Prices change frequently — check current deals on Amazon.*
 
 ---
 
 ## Comparison Table
 
-| Product | Rating | Price Range | Best For |
+| Product | Rating | Price | Best For |
 |---|---|---|---|
-| Option 1 | ★★★★★ | $$ | Overall best |
-| Option 2 | ★★★★☆ | $ | Budget buyers |
-| Option 3 | ★★★★★ | $$$ | Premium choice |
-| Option 4 | ★★★★☆ | $$ | Specific use |
-| Option 5 | ★★★★☆ | $$ | Alternatives |
+| Best Overall | ★★★★★ | $$ | Most pet owners |
+| Best Value | ★★★★☆ | $ | Budget-conscious buyers |
+| Best Premium | ★★★★★ | $$$ | Long-term investment |
+
+---
+
+## Things to Avoid
+
+The {kw} market has clear red flags. Avoid anything that matches these patterns:
+
+- **Fewer than 100 reviews** — not enough real-world testing to trust the claims
+- **Ratings below 4 stars** — too many good options exist to settle for mediocre
+- **Vague material descriptions** — quality products are always transparent about what they're made of
+- **No return policy** — reputable sellers guarantee at least 30 days
+- **Unverified health claims** — especially for food, supplements, and medical products
+- **Prices that seem impossibly low** — cheap materials often mean safety risks for your pet
+
+---
+
+## How We Chose These Products
+
+Our evaluation process:
+
+1. **Minimum 4.2-star rating** with 150+ verified Amazon reviews
+2. **Review quality analysis** — we look for consistent long-term satisfaction, not just initial excitement
+3. **Material and safety check** — non-toxic, pet-safe construction verified
+4. **Price-to-value calculation** — not just cheapest or most expensive, but best long-term value
+5. **Prime eligibility** — all picks ship reliably within the US
+
+No brand pays for placement on this list. Every recommendation is independent.
 
 ---
 
 ## FAQ
 
-### What is the best {keyword.lower()} for beginners?
-For beginners, we recommend starting with our top pick — it's easy to use, well-reviewed, and covers the most common needs. It's the #1 choice in {year} among new pet owners.
+### What's the most important thing to look for in {kw}?
+Material quality and verified owner satisfaction are the best predictors of long-term performance. Focus on reviews that mention 3+ months of real use — those tell you what actually holds up.
 
-### How much should I spend on {keyword.lower()}?
-You don't need to spend a fortune. A budget of $20–$50 will get you a solid option. Our budget pick delivers excellent value in that range.
+### How much should I budget for {kw}?
+For most pet owners, the $25–$60 range covers excellent options. Our "Best Value" pick hits this range and outperforms many premium alternatives. If you're buying for a high-use scenario, consider investing in our premium pick — the cost-per-year math usually works out better.
 
-### Is it safe to buy {keyword.lower()} on Amazon?
-Yes, as long as you stick to verified products with strong reviews. All picks in this guide have 150+ verified reviews and 4.2+ star ratings.
+### Is Amazon a safe place to buy {kw}?
+Yes — as long as you buy from established brands with strong review histories. All picks on this list have 150+ verified reviews and 4.2+ stars. Always check the seller rating and look for the Prime badge.
 
-### How often should I replace {keyword.lower()}?
-It depends on the product and how much wear it gets. As a general rule, inspect it monthly and replace when you see signs of wear, damage, or reduced effectiveness.
+### How often should {kw} be replaced?
+It depends heavily on frequency of use and build quality. As a general guideline: inspect monthly for wear, damage, or reduced effectiveness. Replace immediately if you see safety risks (sharp edges, fraying, structural failure).
 
-### What should I avoid when buying {keyword.lower()}?
-Avoid products with no reviews, vague material descriptions, or ratings below 4 stars. Also watch out for suspiciously cheap options with no brand recognition.
+### Can {kw} work for multiple pets?
+Some options are versatile across species; others are specifically designed for one type. Always check the product description for species compatibility. Our top picks note when they're multi-pet friendly.
 
-### Are there any {keyword.lower()} options that work for multiple pets?
-Yes — several of our picks are versatile enough to work for both dogs and cats. Check the product description for compatibility.
+### What's the difference between cheap and premium {kw}?
+Materials, construction standards, and longevity. Premium options are typically manufactured to tighter tolerances, use higher-grade materials, and come with better customer support. That said, our "Best Value" pick genuinely punches above its price point.
 
-### Where can I find the best deals on {keyword.lower()}?
-Amazon is consistently the best place for deals, especially if you have Prime. Prices change frequently, so check the link for current pricing.
+### How do I know if my pet is responding well?
+Positive signs: consistent use, calm behavior around the product, no signs of irritation or avoidance. Negative signs: avoidance, stress signals, or physical irritation. If your pet consistently avoids a product, it's worth trying a different option even if the reviews are strong.
 
-### Do vets recommend specific {keyword.lower()} products?
-Many veterinarians recommend sticking to established brands with strong safety records. While we can't provide veterinary advice, all products on our list are well-reviewed by real pet owners — many of whom consulted their vets before purchasing.
-
-### What's the difference between cheap and premium {keyword.lower()}?
-The main differences are materials quality, durability, and safety standards. Premium options typically use higher-grade materials, last longer, and go through more rigorous testing. That said, our budget picks offer excellent quality for the price — you don't always need to spend more to get something great.
+### Where do vets stand on {kw}?
+Most veterinarians emphasize that quality and fit matter more than brand. The key guidance is consistent across the board: prioritize safety, proper sizing, and materials over price. All picks on this list meet veterinary safety standards.
 
 ---
 
 ## Pro Tips From Experienced Pet Owners
 
-After analyzing thousands of reviews, here are the most common tips that experienced pet owners share:
+**Tip 1 — Introduce slowly.** New products often take 1-2 weeks for pets to fully accept. Give them time to investigate on their own terms rather than forcing interaction.
 
-**Tip 1 — Introduce gradually.** Don't expect your pet to love a new product immediately. Give them 1-2 weeks to adjust, especially for items they interact with daily.
+**Tip 2 — Measure before you buy.** The most common negative review across all pet product categories is "wrong size." Take 30 seconds to measure your pet before ordering.
 
-**Tip 2 — Size matters more than you think.** Always double-check size charts. The most common complaint in negative reviews is "ordered the wrong size." Measure your pet before buying.
+**Tip 3 — Read the 3-star reviews.** Five-star reviews are enthusiasm, one-star reviews are outliers. Three-star reviews give the most honest picture of real-world performance.
 
-**Tip 3 — Watch for wear and tear.** Inspect products monthly. Worn or damaged items can become safety hazards — especially for pets that chew.
+**Tip 4 — Buy Prime.** Faster shipping, easier returns, and better buyer protection. All picks on this list are Prime eligible — use it.
 
-**Tip 4 — Buy Prime when possible.** Amazon Prime products ship faster and are easier to return if something's not right. All our top picks are Prime eligible.
-
-**Tip 5 — Read the 3-star reviews.** 5-star reviews are enthusiastic, 1-star reviews are outliers. The 3-star reviews give you the most balanced, real-world picture of a product.
+**Tip 5 — Check for recalls.** For any food, supplement, or medical product, search the brand name + "recall" before buying. It takes 30 seconds and is worth the check.
 
 ---
 
 ## Final Verdict
 
-After testing and researching dozens of options, our top recommendation for the best {keyword.lower()} in {year} remains the **#1 pick** at the top of this list. It hits the sweet spot between quality, affordability, and ease of use.
+For most pet owners looking for {kw}, our **Best Overall** pick delivers the best combination of quality, durability, and proven owner satisfaction.
 
-If you're on a budget, the **budget option** won't let you down. And if money is no object, the **premium pick** is worth every penny.
+If budget is the priority, the **Best Value** option won't disappoint — it overperforms at its price point consistently.
 
-No matter which you choose, all the products on this list are tried, tested, and trusted by {identity['target_audience'].lower()}.
+If you want the absolute best and longevity is what you're optimizing for, the **Premium** pick is the right investment.
 
-**Ready to buy?** Check current prices and availability on Amazon using the links above — and don't forget to check if Prime shipping is available in your area.
+All three are available on Amazon Prime. Check current prices using the links above.
 
 ---
 
@@ -341,17 +380,23 @@ No matter which you choose, all the products on this list are tried, tested, and
     return article.strip()
 
 
+# ── Save to dated subfolder ───────────────────────────────────────────────────
 def save_article(keyword: str, angle: str, config: dict) -> tuple[str, str]:
     slug = slugify(keyword)
     date_str = datetime.now().strftime("%Y-%m-%d")
     filename = f"{slug}_{date_str}"
+    category = detect_category(keyword)
+
+    # Save inside articles/draft/YYYY-MM-DD/
+    day_dir = Path(f"articles/draft/{date_str}")
+    day_dir.mkdir(parents=True, exist_ok=True)
 
     article_content = build_article(keyword, angle, config)
     title = build_title(keyword, angle)
-    meta_desc = build_meta_description(keyword, title)
+    meta_desc = build_meta_description(keyword, title, angle)
 
-    draft_path = Path(f"articles/draft/{filename}.md")
-    meta_path = Path(f"articles/draft/{filename}_meta.json")
+    draft_path = day_dir / f"{filename}.md"
+    meta_path = day_dir / f"{filename}_meta.json"
 
     draft_path.write_text(article_content, encoding="utf-8")
 
@@ -363,17 +408,24 @@ def save_article(keyword: str, angle: str, config: dict) -> tuple[str, str]:
         "secondary_keywords": [],
         "word_count": len(article_content.split()),
         "reading_time": f"{max(1, len(article_content.split()) // 200)} min",
-        "category": config["blog_identity"]["niche"],
-        "tags": [keyword, config["blog_identity"]["niche"]],
+        "category": category,
+        "tags": [keyword, category],
         "angle": angle,
-        "amazon_searches": [keyword, f"best {keyword}", f"{keyword} recommended"],
+        "amazon_searches": [keyword, f"best {keyword}", f"{keyword} review"],
         "status": "draft",
         "created_at": datetime.now().isoformat(),
     }
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
 
-    log.info(f"Draft saved: {draft_path}")
+    log.info(f"Draft saved: {draft_path} | category: {category}")
     return str(draft_path), slug
+
+
+def slugify(text: str) -> str:
+    text = text.lower().strip()
+    text = re.sub(r"[^\w\s-]", "", text)
+    text = re.sub(r"[\s_-]+", "-", text)
+    return text.strip("-")
 
 
 if __name__ == "__main__":
@@ -384,4 +436,13 @@ if __name__ == "__main__":
 
     config = load_config()
     path, slug = save_article(args.keyword, args.angle, config)
-    print(json.dumps({"draft_path": path, "slug": slug, "title": build_title(args.keyword, args.angle)}))
+    print(json.dumps({
+        "draft_path": path,
+        "slug": slug,
+        "title": build_title(args.keyword, args.angle),
+        "category": detect_category(args.keyword),
+    }))
+
+
+def load_config() -> dict:
+    return json.loads(Path("config.json").read_text())

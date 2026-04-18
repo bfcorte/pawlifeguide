@@ -60,18 +60,24 @@ def calculate_score(interest: int, intent: str, trend: str) -> int:
 
 
 def suggest_angle(term: str, intent: str) -> str:
+    t = term.lower()
+    if t.startswith("how to"):
+        return "how-to"
+    if " vs " in t or " or " in t:
+        return "comparison"
+    if "guide" in t or "choose" in t or "what to look":
+        return "buyers-guide"
+    if "tip" in t or "trick" in t:
+        return "tips"
+    if "care for" in t or "care guide" in t:
+        return "care-guide"
+    if "best" in t or "top" in t or "review" in t:
+        # Vary between listicle and buyers-guide for commercial terms
+        import random
+        return random.choice(["listicle", "listicle", "buyers-guide"])
     if intent == "COMMERCIAL":
         return "listicle"
-    term_lower = term.lower()
-    if term_lower.startswith("how"):
-        return "how-to"
-    if " vs " in term_lower:
-        return "comparison"
-    if "best" in term_lower or "top" in term_lower:
-        return "listicle"
-    if "guide" in term_lower or "choose" in term_lower:
-        return "buyers-guide"
-    return "how-to"
+    return random.choice(["how-to", "tips", "care-guide"])
 
 
 def generate_amazon_terms(term: str) -> list[str]:
@@ -80,20 +86,90 @@ def generate_amazon_terms(term: str) -> list[str]:
 
 
 def generate_variations(topic: str, identity: dict) -> list[str]:
-    prefixes = [
-        "best", "top", "how to", "what is the best",
-        "affordable", "cheap", "recommended", "beginner",
-    ]
-    suffixes = [
-        "for beginners", "guide", "review", "tips",
-        "2025", "vs", "for home", "that work",
-    ]
-    base = [topic]
-    base += [f"{p} {topic}" for p in prefixes]
-    base += [f"{topic} {s}" for s in suffixes]
-    for cat in identity.get("amazon_categories", [])[:3]:
-        base += [f"best {cat}", f"{cat} guide", f"{cat} review"]
-    return list(set(base))[:50]
+    """Generate a broad, diverse set of keywords covering all pet types and content formats."""
+    year = datetime.now().year
+
+    # ── Pet-specific seed topics ─────────────────────────────────────────────
+    pet_seeds = {
+        "cats": [
+            f"best cat food for indoor cats",
+            f"best cat litter for apartments",
+            f"best interactive cat toys",
+            f"how to train a cat",
+            f"how to reduce cat shedding",
+            f"best cat beds {year}",
+            f"cat hairball remedies",
+            f"best wet cat food brands",
+            f"how to introduce a new cat",
+            f"best automatic cat feeders",
+            f"cat scratching post review",
+            f"best cat carriers for travel",
+        ],
+        "dogs": [
+            f"best dog food for large breeds",
+            f"best dog food for small breeds",
+            f"best dog toys for aggressive chewers",
+            f"how to train a dog to sit",
+            f"how to stop dog barking",
+            f"best dog beds for joint pain",
+            f"best no-pull dog harness",
+            f"best dog crates for home",
+            f"dog separation anxiety tips",
+            f"best dog treats for training",
+            f"best dog shampoo for shedding",
+            f"best invisible fence for dogs",
+            f"how to groom a dog at home",
+            f"best dog food brands {year}",
+        ],
+        "birds": [
+            f"best bird cages for parrots",
+            f"best bird food for parakeets",
+            f"how to train a parrot to talk",
+            f"best bird perches review",
+            f"how to care for a cockatiel",
+            f"best bird toys for budgies",
+            f"bird cage cleaning tips",
+        ],
+        "fish": [
+            f"best aquarium filter for beginners",
+            f"best fish tank setup guide",
+            f"how to cycle a fish tank",
+            f"best betta fish tanks",
+            f"best tropical fish for beginners",
+            f"aquarium plants for beginners",
+            f"best aquarium heater review",
+            f"how to keep fish tank clean",
+        ],
+        "small-pets": [
+            f"best hamster cages {year}",
+            f"best rabbit hutches for indoors",
+            f"how to care for a guinea pig",
+            f"best bedding for hamsters",
+            f"guinea pig food guide",
+            f"best rabbit food brands",
+            f"how to bond with your rabbit",
+        ],
+        "general": [
+            f"best pet insurance {year}",
+            f"how to pet-proof your home",
+            f"best pet cameras for home",
+            f"best pet travel carriers",
+            f"how to introduce pets to each other",
+            f"pet first aid kit essentials",
+            f"how to reduce pet allergies at home",
+            f"best air purifier for pet dander",
+            f"how to remove pet odor from carpet",
+        ],
+    }
+
+    base = []
+    for pet_type, seeds in pet_seeds.items():
+        base.extend(seeds)
+
+    # ── Topic-based additions from the niche ─────────────────────────────────
+    base += [topic, f"best {topic}", f"{topic} guide", f"how to {topic}"]
+
+    return list(dict.fromkeys(base))[:60]  # deduplicate, cap at 60
 
 
 def deduplicate(keywords: list[dict]) -> list[dict]:

@@ -25,10 +25,11 @@ def load_config() -> dict:
 
 
 def find_ready_article(slug: str) -> tuple[Path, Path]:
-    ready_files = list(Path("articles/ready").glob(f"{slug}*.md"))
-    if not ready_files:
+    # Search in both flat ready/ and dated ready/YYYY-MM-DD/ subfolders
+    candidates = list(Path("articles/ready").rglob(f"{slug}*.md"))
+    if not candidates:
         raise FileNotFoundError(f"No ready article for slug: {slug}")
-    article_path = ready_files[0]
+    article_path = candidates[0]
     meta_path = Path(str(article_path).replace(".md", "_meta.json"))
     return article_path, meta_path
 
@@ -447,16 +448,17 @@ def publish(slug: str) -> dict:
     update_category_page(cat_slug, meta)
     update_categories_index(category, config)
 
-    # Move to published
+    # Move to published — use dated subfolder
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    pub_dir = Path(f"articles/published/{date_str}")
+    pub_dir.mkdir(parents=True, exist_ok=True)
     published_log = {
         "slug": slug,
         "title": meta.get("title", ""),
         "published_at": datetime.now().isoformat(),
         "post_url": f"{config['blog_identity']['url']}/posts/{slug}/",
     }
-    Path(f"articles/published/{slug}_log.json").write_text(
-        json.dumps(published_log, indent=2)
-    )
+    (pub_dir / f"{slug}_log.json").write_text(json.dumps(published_log, indent=2))
 
     # Git push if auto_push enabled
     if config["publishing"].get("auto_push", True):
