@@ -58,7 +58,8 @@ def build_adsense_slot(slot_name: str, config: dict) -> str:
     slot_code = config["seo"]["adsense_slots"].get(slot_name, "")
     if slot_code:
         return f'<div class="ad-slot" id="ad-{slot_name}" data-slot="{slot_name}">{slot_code}</div>'
-    return f'<!-- ADSENSE SLOT: {slot_name} -->\n<div class="ad-slot" id="ad-{slot_name.replace("_","-")}" data-slot="{slot_name}">[ADSENSE_{slot_name.upper()}_CODE_HERE]</div>'
+    # Div vazia — CSS já tem .ad-slot:empty { display: none }
+    return f'<!-- ADSENSE SLOT: {slot_name} -->\n<div class="ad-slot" id="ad-{slot_name.replace("_","-")}" data-slot="{slot_name}"></div>'
 
 
 def build_article_html(content_html: str, meta: dict, config: dict) -> str:
