@@ -19,10 +19,7 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-DISCLAIMER = (
-    "*As an Amazon Associate I earn from qualifying purchases. "
-    "This doesn't affect our recommendations.*\n\n"
-)
+DISCLAIMER = ""
 
 # ── Category detection ──────────────────────────────────────────────────────
 CATEGORY_MAP = {
