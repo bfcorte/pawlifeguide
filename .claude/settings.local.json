@@ -37,7 +37,8 @@
       "Bash(cp articles/ready/best-pets-for-apartments_2026-04-17_meta.json articles/2026-04-17/)",
       "Bash(cp articles/ready/best-interactive-cat-toys_2026-04-17.md articles/2026-04-17/)",
       "Bash(cp articles/ready/best-interactive-cat-toys_2026-04-17_meta.json articles/2026-04-17/)",
-      "Bash(python scripts/publisher.py --help)"
+      "Bash(python scripts/publisher.py --help)",
+      "Bash(python scripts/publisher.py --slug \"best-cat-food-indoor-cats\")"
     ]
   }
 }
