@@ -1,49 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/category/</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/about.html</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-pets-for-apartments/</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-interactive-cat-toys/</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-cat-food-indoor-cats/</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-cat-food-for-indoor-cats/</loc>
+    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-dog-treats-for-training/</loc>
     <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-dog-treats-for-training/</loc>
+    <loc>https://bfcorte.github.io/pawlifeguide/posts/best-cat-food-for-indoor-cats/</loc>
     <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

@@ -104,7 +104,17 @@
         "best dog treats for training",
         "dog treats for training recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-18",
+          "slug": "best-dog-treats-for-training",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "how to train a cat",

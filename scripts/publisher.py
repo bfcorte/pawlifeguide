@@ -146,6 +146,7 @@ def build_article_html(content_html: str, meta: dict, config: dict) -> str:
       </nav>
 
       <div class="article-meta">
+        <span class="category-badge">{meta.get('category','pets').title()}</span>
         <time datetime="{meta.get('created_at','')[:10]}">{datetime.now().strftime('%B %d, %Y')}</time>
         &bull; {meta.get('reading_time','5 min')} read
         &bull; {meta.get('word_count',0):,} words
