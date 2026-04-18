@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/publisher.py *)",
+      "Bash(python scripts/keyword_research.py *)",
+      "Bash(python scripts/keyword_selector.py *)",
+      "Bash(python scripts/run_pipeline.py *)",
+      "Bash(python scripts/article_writer.py *)",
+      "Bash(python scripts/amazon_finder.py *)",
+      "Bash(python scripts/seo_optimizer.py *)",
+      "Bash(python scripts/ads_manager.py *)",
+      "Bash(python scripts/scheduler.py)",
+      "Bash(python -c *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npm audit)",
+      "Bash(npm audit *)"
+    ]
+  }
+}

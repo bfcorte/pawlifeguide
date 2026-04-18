@@ -1,0 +1,971 @@
+{
+  "topic": "pets",
+  "niche": "pets",
+  "generated_at": "2026-04-18T12:32:39.045767",
+  "expires_at": "2026-05-18T12:32:39.045767",
+  "total_keywords": 59,
+  "keywords": [
+    {
+      "keyword": "best cat food for indoor cats",
+      "interest_score": 63,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 44,
+      "seasonal_month": 12,
+      "related_rising": [
+        "whats the best cat food for indoor cats"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat food for indoor cats",
+        "best cat food for indoor cats",
+        "cat food for indoor cats recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "pets",
+      "interest_score": 81,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 40,
+      "seasonal_month": 7,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pets",
+        "best pets",
+        "pets recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pets",
+      "interest_score": 71,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 39,
+      "seasonal_month": 2,
+      "related_rising": [
+        "best pets in grow a garden roblox",
+        "best pets in grow a garden",
+        "what are the best pets in grow a garden",
+        "best pets for kids"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pets",
+        "best pets",
+        "pets recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog treats for training",
+      "interest_score": 50,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 35,
+      "seasonal_month": 8,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog treats for training",
+        "best dog treats for training",
+        "dog treats for training recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to train a cat",
+      "interest_score": 64,
+      "trend": "FALLING",
+      "intent": "INFORMATIONAL",
+      "score": 25,
+      "seasonal_month": 12,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to train a cat",
+        "best how to train a cat",
+        "how to train a cat recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to cycle a fish tank",
+      "interest_score": 47,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 23,
+      "seasonal_month": 12,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to cycle a fish tank",
+        "best how to cycle a fish tank",
+        "how to cycle a fish tank recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to introduce a new cat",
+      "interest_score": 57,
+      "trend": "FALLING",
+      "intent": "INFORMATIONAL",
+      "score": 22,
+      "seasonal_month": 8,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to introduce a new cat",
+        "best how to introduce a new cat",
+        "how to introduce a new cat recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog food for small breeds",
+      "interest_score": 28,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 22,
+      "seasonal_month": 9,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog food for small breeds",
+        "best dog food for small breeds",
+        "dog food for small breeds recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "pets guide",
+      "interest_score": 54,
+      "trend": "FALLING",
+      "intent": "INFORMATIONAL",
+      "score": 21,
+      "seasonal_month": 2,
+      "related_rising": [
+        "crimson desert pets guide",
+        "grounded pets guide"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pets",
+        "best pets",
+        "pets recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best wet cat food brands",
+      "interest_score": 35,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 19,
+      "seasonal_month": 9,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "wet cat food brands",
+        "best wet cat food brands",
+        "wet cat food brands recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog food for large breeds",
+      "interest_score": 34,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 19,
+      "seasonal_month": 8,
+      "related_rising": [
+        "what is the best dog food for large breeds"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog food for large breeds",
+        "best dog food for large breeds",
+        "dog food for large breeds recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "whats the best cat food for indoor cats",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "whats the cat food for indoor cats",
+        "best whats the cat food for indoor cats",
+        "whats the cat food for indoor cats recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best interactive cat toys for indoor cats",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "interactive cat toys for indoor cats",
+        "best interactive cat toys for indoor cats",
+        "interactive cat toys for indoor cats recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "what is the best dog food for large breeds",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "what is the dog food for large breeds",
+        "best what is the dog food for large breeds",
+        "what is the dog food for large breeds recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best aquarium plants for beginners",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "aquarium plants for beginners",
+        "best aquarium plants for beginners",
+        "aquarium plants for beginners recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best air purifier for pet dander 2025",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "air purifier for pet dander 2025",
+        "best air purifier for pet dander 2025",
+        "air purifier for pet dander 2025 recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pets in grow a garden roblox",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pets in grow a garden roblox",
+        "best pets in grow a garden roblox",
+        "pets in grow a garden roblox recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pets in grow a garden",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pets in grow a garden",
+        "best pets in grow a garden",
+        "pets in grow a garden recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "what are the best pets in grow a garden",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "COMMERCIAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "what are the pets in grow a garden",
+        "best what are the pets in grow a garden",
+        "what are the pets in grow a garden recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "crimson desert pets guide",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "INFORMATIONAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "crimson desert pets",
+        "best crimson desert pets",
+        "crimson desert pets recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "grounded pets guide",
+      "interest_score": 10,
+      "trend": "RISING",
+      "intent": "INFORMATIONAL",
+      "score": 15,
+      "seasonal_month": null,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "grounded pets",
+        "best grounded pets",
+        "grounded pets recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to stop dog barking",
+      "interest_score": 25,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 14,
+      "seasonal_month": 2,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to sdog barking",
+        "best how to sdog barking",
+        "how to sdog barking recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pet insurance 2026",
+      "interest_score": 20,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 11,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pet insurance 2026",
+        "best pet insurance 2026",
+        "pet insurance 2026 recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog food brands 2026",
+      "interest_score": 16,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 8,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog food brands 2026",
+        "best dog food brands 2026",
+        "dog food brands 2026 recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best interactive cat toys",
+      "interest_score": 13,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 7,
+      "seasonal_month": 2,
+      "related_rising": [
+        "best interactive cat toys for indoor cats"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "interactive cat toys",
+        "best interactive cat toys",
+        "interactive cat toys recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog toys for aggressive chewers",
+      "interest_score": 14,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 7,
+      "seasonal_month": 12,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog toys for aggressive chewers",
+        "best dog toys for aggressive chewers",
+        "dog toys for aggressive chewers recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to keep fish tank clean",
+      "interest_score": 8,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 4,
+      "seasonal_month": 10,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to keep fish tank clean",
+        "best how to keep fish tank clean",
+        "how to keep fish tank clean recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best air purifier for pet dander",
+      "interest_score": 8,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 4,
+      "seasonal_month": 3,
+      "related_rising": [
+        "best air purifier for pet dander 2025"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "air purifier for pet dander",
+        "best air purifier for pet dander",
+        "air purifier for pet dander recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to train a dog to sit",
+      "interest_score": 7,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 3,
+      "seasonal_month": 8,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to train a dog to sit",
+        "best how to train a dog to sit",
+        "how to train a dog to sit recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best invisible fence for dogs",
+      "interest_score": 7,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 3,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "invisible fence for dogs",
+        "best invisible fence for dogs",
+        "invisible fence for dogs recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "aquarium plants for beginners",
+      "interest_score": 6,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 3,
+      "seasonal_month": 6,
+      "related_rising": [
+        "best aquarium plants for beginners"
+      ],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "aquarium plants for beginners",
+        "best aquarium plants for beginners",
+        "aquarium plants for beginners recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to care for a guinea pig",
+      "interest_score": 5,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 3,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to care for a guinea pig",
+        "best how to care for a guinea pig",
+        "how to care for a guinea pig recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best cat litter for apartments",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat litter for apartments",
+        "best cat litter for apartments",
+        "cat litter for apartments recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best automatic cat feeders",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "automatic cat feeders",
+        "best automatic cat feeders",
+        "automatic cat feeders recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "cat scratching post review",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat scratching post review",
+        "best cat scratching post review",
+        "cat scratching post review recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best no-pull dog harness",
+      "interest_score": 4,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 2,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "no-pull dog harness",
+        "best no-pull dog harness",
+        "no-pull dog harness recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog crates for home",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog crates for home",
+        "best dog crates for home",
+        "dog crates for home recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to care for a cockatiel",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to care for a cockatiel",
+        "best how to care for a cockatiel",
+        "how to care for a cockatiel recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best betta fish tanks",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "betta fish tanks",
+        "best betta fish tanks",
+        "betta fish tanks recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best rabbit food brands",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 11,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "rabbit food brands",
+        "best rabbit food brands",
+        "rabbit food brands recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pet cameras for home",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 2,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pet cameras for home",
+        "best pet cameras for home",
+        "pet cameras for home recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to reduce cat shedding",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to reduce cat shedding",
+        "best how to reduce cat shedding",
+        "how to reduce cat shedding recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best cat beds 2026",
+      "interest_score": 2,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 1,
+      "seasonal_month": 2,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat beds 2026",
+        "best cat beds 2026",
+        "cat beds 2026 recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "cat hairball remedies",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat hairball remedies",
+        "best cat hairball remedies",
+        "cat hairball remedies recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog shampoo for shedding",
+      "interest_score": 2,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 1,
+      "seasonal_month": 10,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog shampoo for shedding",
+        "best dog shampoo for shedding",
+        "dog shampoo for shedding recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to groom a dog at home",
+      "interest_score": 2,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to groom a dog at home",
+        "best how to groom a dog at home",
+        "how to groom a dog at home recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best aquarium heater review",
+      "interest_score": 2,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 1,
+      "seasonal_month": 7,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "aquarium heater review",
+        "best aquarium heater review",
+        "aquarium heater review recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best bedding for hamsters",
+      "interest_score": 2,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 1,
+      "seasonal_month": 8,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "bedding for hamsters",
+        "best bedding for hamsters",
+        "bedding for hamsters recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to bond with your rabbit",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to bond with your rabbit",
+        "best how to bond with your rabbit",
+        "how to bond with your rabbit recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "pet first aid kit essentials",
+      "interest_score": 3,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 8,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pet first aid kit essentials",
+        "best pet first aid kit essentials",
+        "pet first aid kit essentials recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to remove pet odor from carpet",
+      "interest_score": 2,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 1,
+      "seasonal_month": 6,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to remove pet odor from carpet",
+        "best how to remove pet odor from carpet",
+        "how to remove pet odor from carpet recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best cat carriers for travel",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "cat carriers for travel",
+        "best cat carriers for travel",
+        "cat carriers for travel recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best dog beds for joint pain",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 9,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog beds for joint pain",
+        "best dog beds for joint pain",
+        "dog beds for joint pain recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "dog separation anxiety tips",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 0,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "dog separation anxiety tips",
+        "best dog separation anxiety tips",
+        "dog separation anxiety tips recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "how to train a parrot to talk",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "INFORMATIONAL",
+      "score": 0,
+      "seasonal_month": 5,
+      "related_rising": [],
+      "article_angle": "how-to",
+      "amazon_search_terms": [
+        "how to train a parrot to talk",
+        "best how to train a parrot to talk",
+        "how to train a parrot to talk recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best bird toys for budgies",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 7,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "bird toys for budgies",
+        "best bird toys for budgies",
+        "bird toys for budgies recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best aquarium filter for beginners",
+      "interest_score": 1,
+      "trend": "FALLING",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 3,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "aquarium filter for beginners",
+        "best aquarium filter for beginners",
+        "aquarium filter for beginners recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best fish tank setup guide",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 10,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "fish tank setup",
+        "best fish tank setup",
+        "fish tank setup recommended"
+      ],
+      "used_history": []
+    },
+    {
+      "keyword": "best pet travel carriers",
+      "interest_score": 1,
+      "trend": "STABLE",
+      "intent": "COMMERCIAL",
+      "score": 0,
+      "seasonal_month": 4,
+      "related_rising": [],
+      "article_angle": "buyers-guide",
+      "amazon_search_terms": [
+        "pet travel carriers",
+        "best pet travel carriers",
+        "pet travel carriers recommended"
+      ],
+      "used_history": []
+    }
+  ]
+}

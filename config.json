@@ -39,6 +39,7 @@
     "github_user": "bfcorte",
     "github_repo": "pawlifeguide",
     "auto_push": true,
+    "auto_publish": true,
     "schedule_hour": 8,
     "keywords_refresh_days": 30,
     "keyword_reuse_cooldown_days": 90,

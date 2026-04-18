@@ -198,13 +198,40 @@ def quick_entry(query: str, intent: str) -> dict:
     }
 
 
-def research_keywords(topic: str, config: dict, force: bool = False) -> dict:
-    try:
-        from pytrends.request import TrendReq
-    except ImportError:
-        log.error("pytrends not installed. Run: pip install pytrends")
-        raise
+def build_static_fallback(topic: str, config: dict) -> dict:
+    """Gera keywords a partir dos seeds estáticos quando PyTrends falha."""
+    identity = config["blog_identity"]
+    base_terms = generate_variations(topic, identity)
+    commercial_words = ["best", "top", "review", "buy", "cheap", "affordable", "vs", "recommended"]
+    keywords = []
+    for term in base_terms:
+        intent = "COMMERCIAL" if any(w in term.lower() for w in commercial_words) else "INFORMATIONAL"
+        score = 60 if intent == "COMMERCIAL" else 35
+        keywords.append({
+            "keyword": term,
+            "interest_score": score,
+            "trend": "STABLE",
+            "intent": intent,
+            "score": score,
+            "seasonal_month": None,
+            "related_rising": [],
+            "article_angle": suggest_angle(term, intent),
+            "amazon_search_terms": generate_amazon_terms(term),
+            "used_history": [],
+        })
+    keywords.sort(key=lambda x: x["score"], reverse=True)
+    return {
+        "topic": topic,
+        "niche": identity["niche"],
+        "generated_at": datetime.now().isoformat(),
+        "expires_at": (datetime.now() + timedelta(days=7)).isoformat(),
+        "total_keywords": len(keywords),
+        "keywords": keywords,
+        "source": "static_fallback",
+    }
 
+
+def research_keywords(topic: str, config: dict, force: bool = False) -> dict:
     kw_file = Path(f"keywords/{topic.replace(' ', '_')}_keywords.json")
 
     if kw_file.exists() and not force:
@@ -214,70 +241,75 @@ def research_keywords(topic: str, config: dict, force: bool = False) -> dict:
             log.info(f"Using cached keywords (valid until {expires.date()})")
             return data
 
+    # Tenta PyTrends com timeout curto por termo
+    try:
+        from pytrends.request import TrendReq
+        pytrends_available = True
+    except ImportError:
+        log.warning("pytrends not installed — using static fallback")
+        pytrends_available = False
+
     identity = config["blog_identity"]
     base_terms = generate_variations(topic, identity)
     all_keywords: list[dict] = []
+    pytrends_failures = 0
 
-    commercial_words = [
-        "best", "top", "review", "buy",
-        "cheap", "affordable", "vs", "for", "recommended",
-    ]
+    commercial_words = ["best", "top", "review", "buy", "cheap", "affordable", "vs", "for", "recommended"]
 
-    pytrends = TrendReq(hl="en-US", tz=300)
-
-    for term in base_terms:
-        try:
-            time.sleep(random.uniform(2.5, 4.5))
-            pytrends.build_payload([term], cat=0, timeframe="today 12-m", geo="US")
-            interest = pytrends.interest_over_time()
-
-            if interest.empty or term not in interest.columns:
-                continue
-
-            avg = int(interest[term].mean())
-            trend = detect_trend(interest[term])
-            intent = (
-                "COMMERCIAL"
-                if any(w in term.lower() for w in commercial_words)
-                else "INFORMATIONAL"
-            )
-            score = calculate_score(avg, intent, trend)
-
+    if pytrends_available:
+        pytrends = TrendReq(hl="en-US", tz=300)
+        for term in base_terms:
+            if pytrends_failures >= 5:
+                log.warning("5 falhas consecutivas — usando fallback estático para o restante")
+                break
             try:
-                related = pytrends.related_queries()
-                rising = related.get(term, {}).get("rising")
-            except Exception:
-                rising = None
-
-            all_keywords.append(
-                {
+                time.sleep(random.uniform(2.5, 4.5))
+                pytrends.build_payload([term], cat=0, timeframe="today 12-m", geo="US")
+                interest = pytrends.interest_over_time()
+                if interest.empty or term not in interest.columns:
+                    continue
+                avg = int(interest[term].mean())
+                trend = detect_trend(interest[term])
+                intent = "COMMERCIAL" if any(w in term.lower() for w in commercial_words) else "INFORMATIONAL"
+                score = calculate_score(avg, intent, trend)
+                try:
+                    related = pytrends.related_queries()
+                    rising = related.get(term, {}).get("rising")
+                except Exception:
+                    rising = None
+                all_keywords.append({
                     "keyword": term,
                     "interest_score": avg,
                     "trend": trend,
                     "intent": intent,
                     "score": score,
                     "seasonal_month": detect_season(interest[term]),
-                    "related_rising": (
-                        rising["query"].tolist()[:5] if rising is not None else []
-                    ),
+                    "related_rising": (rising["query"].tolist()[:5] if rising is not None else []),
                     "article_angle": suggest_angle(term, intent),
                     "amazon_search_terms": generate_amazon_terms(term),
                     "used_history": [],
-                }
-            )
+                })
+                pytrends_failures = 0
+                if rising is not None:
+                    for _, row in rising.head(3).iterrows():
+                        all_keywords.append(quick_entry(row["query"], intent))
+            except Exception as e:
+                log.warning(f"PyTrends error for '{term}': {e}")
+                pytrends_failures += 1
+                time.sleep(10)
+                continue
 
-            if rising is not None:
-                for _, row in rising.head(3).iterrows():
-                    all_keywords.append(quick_entry(row["query"], intent))
-
-        except Exception as e:
-            log.warning(f"PyTrends error for '{term}': {e}")
-            time.sleep(10)
-            continue
+    # Se PyTrends não retornou nada, usa fallback estático
+    if not all_keywords:
+        log.warning("PyTrends não retornou dados — usando seeds estáticos como fallback")
+        result = build_static_fallback(topic, config)
+        kw_file.parent.mkdir(exist_ok=True)
+        kw_file.write_text(json.dumps(result, indent=2))
+        log.info(f"Saved {result['total_keywords']} keywords (static fallback) to {kw_file}")
+        return result
 
     unique = deduplicate(all_keywords)
     sorted_kw = sorted(unique, key=lambda x: x["score"], reverse=True)
-
     result = {
         "topic": topic,
         "niche": identity["niche"],
@@ -286,7 +318,6 @@ def research_keywords(topic: str, config: dict, force: bool = False) -> dict:
         "total_keywords": len(sorted_kw),
         "keywords": sorted_kw,
     }
-
     kw_file.parent.mkdir(exist_ok=True)
     kw_file.write_text(json.dumps(result, indent=2))
     log.info(f"Saved {len(sorted_kw)} keywords to {kw_file}")
