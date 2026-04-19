@@ -477,6 +477,16 @@ def publish(slug: str) -> dict:
             log.error(f"Git push failed: {e}")
             published_log["pushed"] = False
 
+    # Marca keyword como usada para evitar repetição
+    try:
+        from scripts.keyword_selector import mark_used
+        topic = config["blog_identity"]["topic"]
+        keyword = meta.get("primary_keyword", slug.replace("-", " "))
+        angle = meta.get("angle", "listicle")
+        mark_used(topic, keyword, angle, slug)
+    except Exception as e:
+        log.warning(f"Could not mark keyword as used: {e}")
+
     with open("logs/activity.log", "a") as f:
         f.write(
             f"{datetime.now()} | PUBLISHED | {slug} | {meta.get('title','')}\n"

@@ -32,9 +32,18 @@ def select_keyword(topic: str) -> dict | None:
 
     data = json.loads(kw_file.read_text())
     month = datetime.now().month
+
+    # Slugs já publicados — nunca repetir
+    published_slugs = {d.name for d in Path("blog/posts").iterdir() if d.is_dir()} if Path("blog/posts").exists() else set()
+
     candidates = []
 
     for kw in data["keywords"]:
+        # Verifica se o slug gerado desta keyword já está publicado
+        kw_slug = kw["keyword"].lower().strip().replace(" ", "-")
+        if any(kw_slug in pub or pub in kw_slug for pub in published_slugs):
+            continue
+
         history = kw.get("used_history", [])
 
         if not history:
