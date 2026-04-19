@@ -479,7 +479,9 @@ def publish(slug: str) -> dict:
 
     # Marca keyword como usada para evitar repetição
     try:
-        from scripts.keyword_selector import mark_used
+        import sys, os
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from keyword_selector import mark_used
         topic = config["blog_identity"]["topic"]
         keyword = meta.get("primary_keyword", slug.replace("-", " "))
         angle = meta.get("angle", "listicle")

@@ -173,7 +173,7 @@ def build_howto_body(keyword: str, category: str) -> str:
     if not matched_steps:
         # Generic how-to steps
         matched_steps = [
-            ("Understand the basics first", f"Before jumping into {kw}, it helps to understand the underlying principles. {fact_text or f'Most common mistakes with {kw} come from skipping foundational steps that seem optional but aren\\'t.'}"),
+            ("Understand the basics first", f"Before jumping into {kw}, it helps to understand the underlying principles. " + (fact_text or f"Most common mistakes with {kw} come from skipping foundational steps that seem optional but aren't.")),
             ("Gather what you need", f"Prepare your space and materials before starting. Trying to improvise mid-process with {kw} leads to inconsistent results."),
             ("Start slow and build consistency", f"The first attempt at {kw} rarely goes perfectly — that's normal. Focus on consistency over perfection. Small, frequent sessions are more effective than long, infrequent ones."),
             ("Monitor progress and adjust", f"Pay attention to how your pet responds during {kw}. Their body language tells you more than any guide can — if they're stressed or disengaged, take a step back."),
