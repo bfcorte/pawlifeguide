@@ -35,11 +35,13 @@ def find_ready_article(slug: str) -> tuple[Path, Path]:
 
 
 def md_to_html(content: str) -> str:
+    # Strip {#anchor-id} from headings before conversion
+    content = re.sub(r" \{#[^}]+\}", "", content)
     try:
         import markdown
         return markdown.markdown(
             content,
-            extensions=["tables", "fenced_code", "toc", "nl2br"],
+            extensions=["tables", "fenced_code", "toc", "nl2br", "attr_list"],
         )
     except ImportError:
         # Fallback: basic conversion
