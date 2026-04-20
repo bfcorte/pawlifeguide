@@ -459,6 +459,118 @@ Yes — all picks are Amazon Prime eligible. Prices fluctuate, so check current 
     return article.strip()
 
 
+# ── Product suggestions per keyword / category / angle ───────────────────────
+PRODUCT_SUGGESTIONS: dict[str, list[str]] = {
+    # cats
+    "best wet cat food brands":         ["Fancy Feast Classic Pate wet cat food variety pack", "Royal Canin Indoor Adult wet cat food pouches", "Hill's Science Diet Adult Indoor wet cat food"],
+    "best dry cat food":                ["Purina ONE Indoor Advantage dry cat food", "Royal Canin Indoor dry cat food", "Blue Buffalo Indoor Health dry cat food"],
+    "best cat food for indoor cats":    ["Purina Pro Plan Indoor Care dry cat food", "Iams Proactive Health Indoor Weight & Hairball dry", "Hill's Science Diet Indoor dry cat food"],
+    "best cat litter":                  ["Dr. Elsey's Ultra Premium Clumping Cat Litter 40lb", "Arm & Hammer Clump & Seal Platinum cat litter", "Fresh Step Advanced Clumping cat litter"],
+    "best cat toys":                    ["SmartyKat Hot Pursuit electronic cat toy", "Jackson Galaxy Air Wand cat toy", "HEXBUG nano robotic cat toy"],
+    "best cat beds":                    ["Best Friends by Sheri OrthoComfort donut cat bed", "Furhaven orthopedic cat bed", "K&H Pet Products self-warming cat bed"],
+    "best cat carriers":                ["Sherpa Travel Original Deluxe cat carrier", "Morpilot Soft Sided foldable pet carrier", "Petmate Two Door Top Load cat kennel"],
+    "cat scratching post":              ["Pioneer Pet SmartCat Ultimate Scratching Post", "Hepper Hi-Lo Cat Scratcher cardboard", "AmazonBasics Cat Tree with scratching post"],
+    "best cat food for senior cats":    ["Hill's Science Diet Senior 7+ dry cat food", "Purina Pro Plan Senior 11+ wet cat food", "Royal Canin Aging 12+ dry cat food"],
+    "best cat food for kittens":        ["Royal Canin Kitten dry cat food", "Hill's Science Diet Kitten dry cat food", "Blue Buffalo Baby Blue kitten dry food"],
+    # dogs
+    "best dog food for small breeds":   ["Royal Canin Small Adult dry dog food", "Blue Buffalo Life Protection Small Breed", "Hill's Science Diet Small & Toy Breed adult"],
+    "best dog food for large breeds":   ["Royal Canin Large Adult dry dog food", "Purina Pro Plan Large Breed dry dog food", "Hill's Science Diet Large Breed adult dry"],
+    "best dog food":                    ["Purina Pro Plan Adult Classic dry dog food", "Blue Buffalo Life Protection Formula dry dog food", "Hill's Science Diet Adult Perfect Weight dry"],
+    "best dog treats":                  ["Zuke's Mini Naturals training dog treats", "Blue Buffalo Bits soft-moist training treats", "Wellness Soft WellBites grain-free dog treats"],
+    "best dog beds":                    ["Furhaven Orthopedic dog bed", "BarksBar Snuggly Sleeper orthopedic dog bed", "Big Barker 7 inch orthopedic dog bed"],
+    "best dog leash":                   ["EzyDog Zero Shock dog leash", "Flexi New Classic retractable dog leash", "Ruffwear Flat Out dog leash"],
+    "best dog collar":                  ["Ruffwear Polar Trex dog collar", "Blueberry Pet Classic Solid dog collar", "Martingale collar for dogs Choke Free"],
+    "best dog crate":                   ["MidWest Homes iCrate double door dog crate", "AmazonBasics Folding metal dog crate", "Diggs Revol dog crate"],
+    "best dog shampoo":                 ["Burt's Bees Hypoallergenic dog shampoo", "Earthbath All Natural dog shampoo oatmeal", "TropiClean Luxury 2-in-1 dog shampoo"],
+    "best dog harness":                 ["Ruffwear Front Range dog harness", "PetSafe Easy Walk dog harness no-pull", "Julius-K9 IDC Power dog harness"],
+    # fish / aquarium
+    "best aquarium plants for beginners": ["Greenpro Java Fern live aquarium plant", "Anubias Barteri live aquarium plant", "Amazon Sword Echinodorus beginner aquarium plant"],
+    "best aquarium filter":             ["Fluval 307 canister aquarium filter", "AquaClear Power Filter hang-on-back", "MarineLand Penguin Power Filter 200"],
+    "best aquarium heater":             ["Eheim Jager TruTemp aquarium heater", "Fluval E200 Advanced Electronic heater", "Aqueon Pro adjustable aquarium heater"],
+    "best betta fish tank":             ["Fluval Spec V 5-gallon betta tank", "Marineland Contour 5 glass betta aquarium", "Tetra Crescent acrylic aquarium kit"],
+    "best aquarium light":              ["Fluval Plant 3.0 LED planted aquarium light", "Nicrew ClassicLED aquarium light", "NICREW SkyLED Plus aquarium light"],
+    # birds
+    "best bird cage":                   ["Prevue Pet Products Wrought Iron bird cage", "Vision Bird Cage Model M02", "Midwest Homes for Pets bird cage"],
+    "best bird food":                   ["Zupreem Natural Bird Food medium parrots", "Roudybush Daily Maintenance pellets", "Harrison's Bird Foods Adult Lifetime"],
+    # small pets
+    "best hamster cage":                ["Prevue Pet Products Universal small animal home", "Kaytee My First Home hamster habitat", "Ferplast Favola hamster cage"],
+    "best rabbit hutch":                ["Petsfit 2-Story outdoor rabbit hutch", "Aivituvin Rabbit Hutch with run", "MidWest Wabbitat Deluxe rabbit home"],
+    # air quality / health
+    "best air purifier for pet dander": ["Winix 5500-2 air purifier with PlasmaWave", "Levoit Core 400S smart air purifier", "Coway AP-1512HH Mighty air purifier HEPA"],
+    "best robot vacuum for pet hair":   ["iRobot Roomba i3+ self-emptying robot vacuum", "Shark IQ Robot vacuum with self-empty base", "Eufy BoostIQ RoboVac 11S slim robot vacuum"],
+}
+
+# Angle-specific hints shown after product list
+ANGLE_HINTS: dict[str, str] = {
+    "listicle":      "Look for products with 4+ stars and 300+ reviews. Variety of price points preferred.",
+    "buyers-guide":  "Find 3 products at different price tiers: budget (~$15-25), mid-range (~$30-50), premium ($50+).",
+    "how-to":        "Focus on tools/accessories needed for the process, not just food/treats.",
+    "comparison":    "Send 2 products that directly compete (similar type, different brand/price).",
+    "budget":        "Only products under $30. Prime eligible mandatory.",
+    "premium":       "Premium picks $40+. High review count (500+) and 4.5+ stars.",
+    "seasonal":      "Products relevant to the current season or upcoming holiday.",
+    "annual_update": "Same categories as previous version — just check if original ASINs still have good ratings.",
+}
+
+
+def get_product_suggestions(keyword: str, category: str, angle: str) -> list[str]:
+    kw_lower = keyword.lower().strip()
+    # Exact match first
+    if kw_lower in PRODUCT_SUGGESTIONS:
+        return PRODUCT_SUGGESTIONS[kw_lower]
+    # Partial match
+    for key, suggestions in PRODUCT_SUGGESTIONS.items():
+        if key in kw_lower or kw_lower in key:
+            return suggestions
+    # Category fallbacks
+    fallbacks = {
+        "cats":       ["Best selling wet cat food for indoor cats", "Best selling dry cat food adult", "Best rated cat accessory or toy"],
+        "dogs":       ["Best selling dry dog food for adult dogs", "Best rated dog treat natural", "Best selling dog accessory or toy"],
+        "fish":       ["Best live aquarium plant beginner", "Best aquarium filter for small tank", "Best aquarium starter kit"],
+        "birds":      ["Best bird food pellets parrots", "Best bird cage medium size", "Best bird toy enrichment"],
+        "small-pets": ["Best hamster or rabbit bedding", "Best small animal cage habitat", "Best small pet food pellets"],
+        "guides":     ["Best selling pet health supplement", "Best rated pet first aid kit", "Best pet grooming tool"],
+        "pets":       ["Best selling pet product 2025", "Best rated pet food brand", "Best pet accessory Amazon bestseller"],
+    }
+    return fallbacks.get(category, fallbacks["pets"])
+
+
+def save_product_suggestions(slug: str, keyword: str, category: str, angle: str, day_dir: Path) -> None:
+    suggestions = get_product_suggestions(keyword, category, angle)
+    angle_hint = ANGLE_HINTS.get(angle, "Look for 4+ stars, 300+ reviews, Prime eligible.")
+
+    lines = [
+        f"Products needed for: {keyword}",
+        f"Article angle: {angle}",
+        f"Category: {category}",
+        "",
+        "=" * 60,
+        "Search these on Amazon and send me the product page URLs:",
+        "(I'll extract ASIN, title, image, rating automatically)",
+        "=" * 60,
+        "",
+    ]
+    for i, term in enumerate(suggestions, 1):
+        lines.append(f'{i}. "{term}"')
+
+    lines += [
+        "",
+        "-" * 60,
+        f"TIP: {angle_hint}",
+        "-" * 60,
+        "",
+        "Image URL format to look for:",
+        "  https://m.media-amazon.com/images/I/XXXXXXX._AC_SL1500_.jpg",
+        "",
+        "Paste the Amazon product page URL for each item, e.g.:",
+        "  https://www.amazon.com/dp/B08XYZ1234",
+    ]
+
+    txt_path = day_dir / f"{slug}_products_needed.txt"
+    txt_path.write_text("\n".join(lines), encoding="utf-8")
+    log.info(f"Products needed: {txt_path}")
+
+
 # ── Save to dated subfolder ───────────────────────────────────────────────────
 def save_article(keyword: str, angle: str, config: dict) -> tuple[str, str]:
     slug = slugify(keyword)
@@ -495,6 +607,7 @@ def save_article(keyword: str, angle: str, config: dict) -> tuple[str, str]:
         "created_at": datetime.now().isoformat(),
     }
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    save_product_suggestions(slug, keyword, category, angle, day_dir)
 
     log.info(f"Draft saved: {draft_path} | category: {category}")
     return str(draft_path), slug
