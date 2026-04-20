@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Paw print icon for PawLife Guide -->
+  <rect width="100" height="100" rx="20" fill="#F97316"/>
+  <!-- Top left toe -->
+  <ellipse cx="28" cy="28" rx="9" ry="11" fill="white"/>
+  <!-- Top right toe -->
+  <ellipse cx="72" cy="28" rx="9" ry="11" fill="white"/>
+  <!-- Middle left toe -->
+  <ellipse cx="18" cy="48" rx="8" ry="10" fill="white"/>
+  <!-- Middle right toe -->
+  <ellipse cx="82" cy="48" rx="8" ry="10" fill="white"/>
+  <!-- Main pad -->
+  <ellipse cx="50" cy="68" rx="22" ry="20" fill="white"/>
+</svg>
