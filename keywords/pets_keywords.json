@@ -233,7 +233,17 @@
         "best wet cat food brands",
         "wet cat food brands recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-20",
+          "slug": "best-wet-cat-food-brands",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best dog food for large breeds",
