@@ -261,7 +261,17 @@
         "best dog food for large breeds",
         "dog food for large breeds recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-20",
+          "slug": "best-dog-food-for-large-breeds",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "whats the best cat food for indoor cats",

@@ -1,0 +1,22 @@
+Products needed for: best air purifier for pet dander 2025
+Article angle: buyers-guide
+Category: pets
+
+============================================================
+Search these on Amazon and send me the product page URLs:
+(I'll extract ASIN, title, image, rating automatically)
+============================================================
+
+1. "Winix 5500-2 air purifier with PlasmaWave"
+2. "Levoit Core 400S smart air purifier"
+3. "Coway AP-1512HH Mighty air purifier HEPA"
+
+------------------------------------------------------------
+TIP: Find 3 products at different price tiers: budget (~$15-25), mid-range (~$30-50), premium ($50+).
+------------------------------------------------------------
+
+Image URL format to look for:
+  https://m.media-amazon.com/images/I/XXXXXXX._AC_SL1500_.jpg
+
+Paste the Amazon product page URL for each item, e.g.:
+  https://www.amazon.com/dp/B08XYZ1234
