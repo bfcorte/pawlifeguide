@@ -547,7 +547,17 @@
         "best how to sdog barking",
         "how to sdog barking recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-21",
+          "slug": "how-to-stop-dog-barking",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best pet insurance 2026",
