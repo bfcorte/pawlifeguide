@@ -69,25 +69,44 @@ def _strip_leading_superlatives(keyword: str) -> str:
 
 
 def build_title(keyword: str, angle: str) -> str:
-    kw_clean = _strip_leading_superlatives(keyword)
+    # Strip year from keyword to avoid "2026 in 2026" duplication
+    kw_clean = _strip_leading_superlatives(re.sub(r"\b20\d{2}\b", "", keyword).strip())
     kw_action = re.sub(r"^how\s+to\s+", "", keyword.strip(), flags=re.IGNORECASE).strip().title()
     n = random.choice(COUNT_OPTIONS)
     hook = random.choice(CREDIBILITY_HOOKS)
 
+    listicle_formats = [
+        f"{n} Best {kw_clean} in {YEAR} ({hook})",
+        f"The {n} Best {kw_clean} for {YEAR} — {hook}",
+        f"Best {kw_clean} in {YEAR}: {n} Options Worth Your Money",
+        f"{n} {kw_clean} That Actually Work in {YEAR}",
+    ]
+    howto_formats = [
+        f"How to {kw_action}: The Method Vets Actually Recommend ({YEAR})",
+        f"How to {kw_action} the Right Way — Step-by-Step Guide",
+        f"The Right Way to {kw_action} ({YEAR} Guide)",
+    ]
+    buyers_formats = [
+        f"{n} Best {kw_clean} in {YEAR} ({hook})",
+        f"Best {kw_clean} in {YEAR}: What to Buy and What to Skip",
+        f"The {n} Best {kw_clean} Right Now — {hook}",
+        f"{n} Best {kw_clean} ({YEAR}): Honest Picks, No Fluff",
+    ]
+
     templates = {
-        "listicle":      f"{n} Best {kw_clean} in {YEAR} ({hook})",
-        "how-to":        f"How to {kw_action}: The Method Vets Actually Recommend ({YEAR})",
-        "comparison":    f"{keyword.strip().title()}: Which One Is Really Worth It in {YEAR}?",
+        "listicle":      random.choice(listicle_formats),
+        "how-to":        random.choice(howto_formats),
+        "comparison":    f"{kw_clean}: Which One Is Really Worth It in {YEAR}?",
         "single-review": f"The Best {kw_clean} in {YEAR}: In-Depth Review",
-        "buyers-guide":  f"Best {kw_clean} in {YEAR}: {n} Picks, Real Data, No Fluff",
+        "buyers-guide":  random.choice(buyers_formats),
         "budget":        f"Best Affordable {kw_clean} in {YEAR} (Under $40, {hook})",
         "premium":       f"Best Premium {kw_clean} in {YEAR} Worth Every Penny",
         "seasonal":      f"Best {kw_clean} for This Season ({YEAR})",
         "annual_update": f"Best {kw_clean} in {YEAR} — Updated Picks",
-        "tips":          f"{n} Expert Tips for {keyword.strip().title()} That Actually Work",
-        "care-guide":    f"Complete {kw_clean} Guide: Everything You Need to Know ({YEAR})",
+        "tips":          f"{n} Expert Tips for {kw_clean} That Actually Work",
+        "care-guide":    f"The Complete {kw_clean} Guide for {YEAR}",
     }
-    return templates.get(angle, f"{n} Best {kw_clean} — Complete Guide {YEAR}")
+    return templates.get(angle, f"{n} Best {kw_clean} — {hook} {YEAR}")
 
 
 def build_meta_description(keyword: str, title: str, angle: str) -> str:
