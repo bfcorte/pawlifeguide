@@ -1,0 +1,22 @@
+Products needed for: best dog food brands 2026
+Article angle: buyers-guide
+Category: dogs
+
+============================================================
+Search these on Amazon and send me the product page URLs:
+(I'll extract ASIN, title, image, rating automatically)
+============================================================
+
+1. "Purina Pro Plan Adult Classic dry dog food"
+2. "Blue Buffalo Life Protection Formula dry dog food"
+3. "Hill's Science Diet Adult Perfect Weight dry"
+
+------------------------------------------------------------
+TIP: Find 3 products at different price tiers: budget (~$15-25), mid-range (~$30-50), premium ($50+).
+------------------------------------------------------------
+
+Image URL format to look for:
+  https://m.media-amazon.com/images/I/XXXXXXX._AC_SL1500_.jpg
+
+Paste the Amazon product page URL for each item, e.g.:
+  https://www.amazon.com/dp/B08XYZ1234

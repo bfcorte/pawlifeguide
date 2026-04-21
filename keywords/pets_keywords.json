@@ -573,7 +573,17 @@
         "best pet insurance 2026",
         "pet insurance 2026 recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-21",
+          "slug": "best-pet-insurance-2026",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best dog food brands 2026",
