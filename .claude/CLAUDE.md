@@ -1,5 +1,5 @@
 # ============================================================
-# BLOG-BOT v6.0 — PROMPT MASTER + EDITORIAL STANDARD
+# BLOG-BOT v7.0 — PROMPT MASTER + EDITORIAL STANDARD + EDITOR
 # Salve em: .claude/CLAUDE.md na raiz de cada projeto blog
 # ============================================================
 
@@ -125,6 +125,68 @@ Hooks aceitáveis:
 
 NÃO usar: "Complete Guide", "Everything You Need to Know",
 "Ultimate Guide" — são fórmulas gastas sem credibilidade.
+NÃO repetir o mesmo padrão de subtítulo em dois artigos.
+
+─────────────────────────────────────────────────────────────
+### CHECKLIST DO EDITOR — OBRIGATÓRIO ANTES DE PUBLICAR
+─────────────────────────────────────────────────────────────
+
+Antes de qualquer publicação, validar:
+
+TÍTULO:
+  [ ] É específico e humano — lendo o título, você sabe
+      exatamente o que vai encontrar no artigo
+  [ ] Não repete padrões de outros posts publicados na mesma
+      semana (dois artigos com "(Vet-Trusted Picks)" = falha)
+  [ ] Não contém "Real Data, No Fluff", "X Picks, Real Data",
+      "The Method Vets Actually Recommend" (genérico demais)
+  [ ] Não duplica o ano: "2026 in 2026" = falha
+  [ ] Tem algum diferencial: humor sutil, especificidade,
+      promessa clara, ou detalhe que chama atenção
+
+ABERTURA (primeiros 3 parágrafos):
+  [ ] Abre com dado concreto ou fato surpreendente
+  [ ] NÃO começa com "Choosing the right X is important"
+  [ ] O gancho é específico ao TÓPICO — não genérico de
+      categoria (artigo de treinamento não abre com dados
+      sobre dehydration em gatos)
+
+CORPO:
+  [ ] Nenhuma frase idêntica a outro artigo já publicado
+  [ ] "best best [keyword]" não aparece em nenhum lugar
+  [ ] Critérios têm dados específicos (%, mg, kcal, etc.)
+      — não apenas adjetivos vagos
+  [ ] FAQ responde de verdade — não usa "it depends"
+      sem dar os critérios do depends
+
+PRODUTOS:
+  [ ] Cada produto tem editorial específico (não texto
+      genérico idêntico para os 3)
+  [ ] Badge é descritivo: "Best for Senior Dogs",
+      não apenas "Best Overall"
+
+SE QUALQUER ITEM FALHAR → reescrever antes de publicar.
+
+─────────────────────────────────────────────────────────────
+### PADRÃO DE TÍTULOS EDITORIAIS (exemplos aprovados)
+─────────────────────────────────────────────────────────────
+
+  "10 Best Dog Training Treats: What Professional Trainers
+   Keep in Their Pockets"
+
+  "How to Cycle a Fish Tank: The Complete Guide (And Why
+   Most People Skip the Step That Kills Fish)"
+
+  "The 7 Best Cat Foods for Indoor Cats, According to
+   Feline Nutritionists"
+
+  "9 Best Pets for Apartment Living — Low Noise, Low
+   Maintenance, High Reward"
+
+  "How to Train a Cat: The Clicker Method Animal
+   Behaviorists Actually Use"
+
+Padrão: Específico + Promessa clara + Diferencial humano.
 
 Ao iniciar qualquer sessão, leia o config.json do projeto
 atual para carregar a identidade do blog. Todo comportamento

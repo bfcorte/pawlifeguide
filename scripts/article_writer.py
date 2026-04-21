@@ -430,25 +430,66 @@ def build_article(keyword: str, angle: str, config: dict) -> str:
         return _build_listicle(keyword, title, kw, category, knowledge, hook, context, expert_note, red_flags, faq_items)
 
 
+def _why_matters(kw: str, knowledge: dict) -> str:
+    """Returns a topic-specific 'why this matters' sentence instead of generic boilerplate."""
+    custom = {
+        "introduce a new cat":  "How you handle the first few weeks determines whether two cats coexist peacefully for years — or fight every day. There's no shortcut, but the process is well-documented and works consistently when followed.",
+        "train a cat":          "Cats can learn commands, routines, and behaviors just as reliably as dogs — the difference is technique, not trainability. The approach here is based on applied behavior science, not folk wisdom.",
+        "cycle a fish tank":    "The nitrogen cycle is the only thing standing between your fish and a tank full of toxic ammonia. It's biology, not optional — and it takes the time it takes. Understanding it is what separates fishkeepers who succeed from those who give up.",
+        "stop dog barking":     "Most people try to stop barking without knowing which type they're dealing with. That's why most approaches fail. The right method depends entirely on the underlying cause — and that's what this guide addresses first.",
+        "groom a dog":          "Regular grooming isn't cosmetic — it's how you catch skin issues, parasites, lumps, and infections early. Done correctly, it also reduces anxiety around handling, which makes vet visits easier for the rest of your dog's life.",
+        "care for a rabbit":    "Rabbits are the third most surrendered animal to shelters, largely because their care requirements aren't what people expect. This guide covers what actually matters — and what most beginner resources get wrong.",
+    }
+    kw_lower = kw.lower()
+    for key, text in custom.items():
+        if key in kw_lower:
+            return text
+    return knowledge.get("context", f"Done correctly, this process produces lasting results. Done incorrectly, it creates problems that take far longer to fix than the shortcut saved.")
+
+
+def _before_you_start(kw: str, category: str) -> str:
+    """Returns category-appropriate preparation tips instead of identical boilerplate."""
+    if category in ("cats", "dogs"):
+        return f"""Before your first session:
+
+- **Choose the right moment**: Work with your pet when they're calm, not just-fed, and away from distractions. A bored pet engages; an overstimulated one doesn't.
+- **Have high-value rewards ready**: The treat must be genuinely motivating — something they don't get any other time. Tiny pieces (smaller than a fingernail) are ideal for training.
+- **Keep it short**: 5–10 minutes is enough. Longer sessions drop quality and bore the animal. Stop before they disengage — always end on a small success.
+- **Pick one goal per session**: Trying to accomplish multiple things splits focus for both of you. One clear criterion, one clear reward."""
+    elif category == "fish":
+        return f"""Before you start:
+
+- **Get a liquid test kit** (not strips): API Master Test Kit is the standard. You'll be testing water every few days — accuracy matters.
+- **Have dechlorinator ready**: Every water change requires it. Sodium thiosulfate neutralizes chlorine and chloramine. Use one that also handles heavy metals.
+- **Set realistic expectations**: This process takes 4–8 weeks. Rushing it kills fish. Patience here saves money and frustration later.
+- **Never clean the filter with tap water**: The beneficial bacteria colony lives in the filter media. Tap water destroys it. Use tank water for any filter maintenance."""
+    else:
+        return f"""Before you begin:
+
+- **Read the full guide first**: Understanding where you're going makes each step make more sense.
+- **Prepare your space**: The right environment reduces friction and helps your pet feel safe.
+- **Track your progress**: Brief notes after each session reveal patterns — what's working and what's not.
+- **Be patient with setbacks**: Regression is normal. It doesn't mean the process isn't working."""
+
+
 def _build_howto(keyword, title, kw, category, knowledge, hook, context, expert_note, faq_items):
     steps = knowledge.get("steps", [])
     if not steps:
         steps = [
             ("Understand the fundamentals before starting", context or f"Most problems with {kw} come from skipping the foundational steps. Understanding why each step matters makes you better at reading your pet's response and adapting when needed."),
-            ("Set up the right environment", f"The environment matters as much as the technique with {kw}. Reduce distractions, ensure your pet is calm, and have everything you need before you begin."),
-            ("Start with the first milestone, not the end goal", f"Break the process into the smallest possible steps and succeed at each one before advancing. Consistency over days matters more than intensity in any single session."),
-            ("Read and respond to your pet's signals", f"Your pet's body language tells you when to advance, slow down, or stop entirely. Signs of stress during {kw}: avoidance, low body posture, yawning, lip licking. Positive signs: relaxed body, voluntary engagement, eating treats readily."),
-            ("Maintain consistency and track progress", f"Whatever progress looks like for {kw}, document it. Notes from each session help you identify patterns — what's working, what's causing setbacks, and when to adjust the approach."),
+            ("Set up the right environment", f"The environment matters as much as the technique. Reduce distractions, ensure your pet is calm, and have everything you need before you begin."),
+            ("Start with the first milestone, not the end goal", "Break the process into the smallest possible steps and succeed at each one before advancing. Consistency over days matters more than intensity in any single session."),
+            ("Read and respond to your pet's signals", "Your pet's body language tells you when to advance, slow down, or stop entirely. Signs of stress: avoidance, low body posture, yawning, lip licking. Positive signs: relaxed body, voluntary engagement, eating treats readily."),
+            ("Maintain consistency and track progress", "Brief notes from each session help you identify patterns — what's working, what's causing setbacks, and when to adjust the approach."),
         ]
 
     steps_md = ""
     for i, (step_title, step_body) in enumerate(steps, 1):
         steps_md += f"\n### Step {i}: {step_title}\n\n{step_body}\n"
 
-    red_flags_md = ""
     rf = knowledge.get("red_flags", [])
-    if rf:
-        red_flags_md = "\n".join(f"- **{item}**" if not item.startswith("-") else item for item in rf)
+    red_flags_md = "\n".join(f"- **{item}**" if not item.startswith("-") else item for item in rf) if rf else \
+        f"- Moving too fast through the steps\n- Inconsistent timing between sessions\n- Using the wrong rewards (not motivating enough)\n- Punishing mistakes instead of redirecting"
 
     faq_md = ""
     for q, a in faq_items:
@@ -456,23 +497,24 @@ def _build_howto(keyword, title, kw, category, knowledge, hook, context, expert_
     if not faq_md:
         faq_md = f"""
 ### How long does this take?
-Most people see meaningful progress within 1–2 weeks of daily, consistent effort. Full mastery of more complex goals typically takes 4–8 weeks. Consistency matters more than intensity.
+Most owners see meaningful progress within 1–2 weeks of daily, consistent effort. Full mastery of more complex goals typically takes 4–8 weeks. Consistency is the variable that matters most.
 
 ### What if my pet doesn't respond?
-Check three variables: reward value (is the treat actually motivating?), session length (shorter is almost always better), and environment (too many distractions?). If all three are optimized and nothing is working, a certified animal behaviorist can identify what's being missed.
+Check three variables first: reward value (genuinely motivating?), session length (shorter is almost always better), and environment (too many distractions?). If all three are right and nothing is working, a certified animal behaviorist can identify what's missing.
 
 ### Is this safe for my pet?
-Yes, when done correctly. If your pet shows fear, pain, or extreme stress during the process, stop and consult a veterinarian or certified behaviorist.
+Yes, when done correctly. If your pet shows fear, pain, or extreme stress at any point, stop the session and consult a veterinarian or certified behaviorist before continuing.
 """
+
+    why_matters = _why_matters(kw, knowledge)
+    before_start = _before_you_start(kw, category)
 
     return f"""# {title}
 
 {hook}
 
-{context}
-
 <div class="quick-answer">
-<strong>Quick Answer:</strong> The most common reason this fails is rushing. Every step in this guide builds on the previous one — skipping ahead creates confusion that takes longer to undo than the time you tried to save. Start at Step 1.
+<strong>Quick Answer:</strong> The most common reason this fails is rushing. Every step builds on the previous one — skipping ahead creates confusion that takes longer to fix than the time you tried to save. Start at Step 1.
 </div>
 
 *As an Amazon Associate I earn from qualifying purchases. This doesn't affect our recommendations.*
@@ -484,7 +526,7 @@ Yes, when done correctly. If your pet shows fear, pain, or extreme stress during
 - [Before You Start](#before-you-start)
 - [Step-by-Step Guide](#step-by-step-guide)
 - [Mistakes That Set You Back](#mistakes-that-set-you-back)
-- [Products That Make It Easier](#products-that-make-it-easier)
+- [Recommended Products](#recommended-products)
 - [Expert Perspective](#expert-perspective)
 - [FAQ](#faq)
 
@@ -492,7 +534,7 @@ Yes, when done correctly. If your pet shows fear, pain, or extreme stress during
 
 ## Why This Matters
 
-Getting {kw} right has real, lasting consequences for your pet's health and behavior. The foundational steps aren't optional — they're what the rest of the process is built on.
+{why_matters}
 
 {context}
 
@@ -500,12 +542,7 @@ Getting {kw} right has real, lasting consequences for your pet's health and beha
 
 ## Before You Start
 
-Successful {kw} depends less on technique than on preparation:
-
-- **Timing matters**: Work with your pet when they're calm and slightly hungry (not right after a meal, not when overstimulated)
-- **Keep sessions short**: 5–10 minutes maximum — quality of engagement beats duration every time
-- **Remove distractions**: The quieter the environment, the faster the learning
-- **Define what success looks like**: A clear, specific goal helps you recognize progress and know when to stop for the day
+{before_start}
 
 ---
 
@@ -517,13 +554,13 @@ Successful {kw} depends less on technique than on preparation:
 
 ## Mistakes That Set You Back
 
-{red_flags_md if red_flags_md else f"The most common mistakes with {kw}: moving too fast, inconsistent timing, and using the wrong rewards. All three are fixable once you know to watch for them."}
+{red_flags_md}
 
 ---
 
-## Products That Make It Easier
+## Recommended Products
 
-These are the tools experienced owners consistently recommend for {kw}. None are required, but they reduce friction and improve results.
+These are the tools experienced owners consistently recommend. None are required, but they make the process significantly easier.
 
 [PRODUCT_CARD]
 
@@ -545,7 +582,7 @@ These are the tools experienced owners consistently recommend for {kw}. None are
 
 ---
 
-*Every animal is an individual. The steps above work for most — but reading your specific pet's signals matters more than following any guide precisely.*
+*Every animal is an individual. The steps above work for most — but reading your specific pet's signals matters more than following any guide to the letter.*
 """.strip()
 
 
@@ -583,6 +620,9 @@ Yes — all picks meet safety standards for their category. For food products, n
 Consistent, voluntary engagement is the clearest signal. Avoidance, changes in appetite, or stress behaviors after introduction mean something isn't working — switch to a different option rather than persisting.
 """
 
+    # Strip leading "best " from kw to avoid "best best dog food" pattern
+    kw_display = re.sub(r"^best\s+", "", kw).strip()
+
     return f"""# {title}
 
 {hook}
@@ -590,7 +630,7 @@ Consistent, voluntary engagement is the clearest signal. Avoidance, changes in a
 {context}
 
 <div class="quick-answer">
-<strong>Quick Answer:</strong> The best {kw} depends on your pet's specific needs — size, age, and health status all matter. Read the criteria section before the product list. Knowing what to look for makes the right choice obvious.
+<strong>Quick Answer:</strong> The right pick depends on your pet's age, size, and health. Spend 2 minutes on the criteria section below — it makes the choice obvious and prevents the most common buying mistakes.
 </div>
 
 *As an Amazon Associate I earn from qualifying purchases. This doesn't affect our recommendations.*
@@ -609,7 +649,7 @@ Consistent, voluntary engagement is the clearest signal. Avoidance, changes in a
 
 ## What Actually Matters
 
-Before looking at any product, understand the criteria that separate the best {kw} from the rest. Most buying mistakes come from optimizing for the wrong things.
+Most buying mistakes happen when people optimize for the wrong things — brand recognition, price, or packaging. Here's what actually separates good {kw_display} from the rest:
 
 {criteria_md}
 
@@ -617,7 +657,7 @@ Before looking at any product, understand the criteria that separate the best {k
 
 ## What to Avoid
 
-These patterns reliably indicate lower quality in the {kw} category:
+These are the patterns that reliably indicate lower quality:
 
 {red_flags_md}
 
