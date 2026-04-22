@@ -1,0 +1,22 @@
+Products needed for: best dog toys for aggressive chewers
+Article angle: buyers-guide
+Category: dogs
+
+============================================================
+Search these on Amazon and send me the product page URLs:
+(I'll extract ASIN, title, image, rating automatically)
+============================================================
+
+1. "KONG Extreme dog toy black rubber"
+2. "Goughnuts Maxx 50 dog chew ring"
+3. "West Paw Zogoflex Hurley dog bone"
+
+------------------------------------------------------------
+TIP: Find 3 products at different price tiers: budget (~$15-25), mid-range (~$30-50), premium ($50+).
+------------------------------------------------------------
+
+Image URL format to look for:
+  https://m.media-amazon.com/images/I/XXXXXXX._AC_SL1500_.jpg
+
+Paste the Amazon product page URL for each item, e.g.:
+  https://www.amazon.com/dp/B08XYZ1234

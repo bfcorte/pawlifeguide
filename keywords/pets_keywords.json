@@ -599,7 +599,17 @@
         "best dog food brands 2026",
         "dog food brands 2026 recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-21",
+          "slug": "best-dog-food-brands-2026",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best interactive cat toys",
