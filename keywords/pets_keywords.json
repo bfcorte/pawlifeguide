@@ -679,7 +679,17 @@
         "best how to keep fish tank clean",
         "how to keep fish tank clean recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-22",
+          "slug": "how-to-keep-fish-tank-clean",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best air purifier for pet dander",
