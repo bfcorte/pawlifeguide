@@ -653,7 +653,17 @@
         "best dog toys for aggressive chewers",
         "dog toys for aggressive chewers recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-22",
+          "slug": "best-dog-toys-for-aggressive-chewers",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "how to keep fish tank clean",
