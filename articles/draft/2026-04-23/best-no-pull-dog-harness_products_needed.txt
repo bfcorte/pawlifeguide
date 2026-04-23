@@ -1,0 +1,22 @@
+Products needed for: best no-pull dog harness
+Article angle: listicle
+Category: dogs
+
+============================================================
+Search these on Amazon and send me the product page URLs:
+(I'll extract ASIN, title, image, rating automatically)
+============================================================
+
+1. "Best selling dry dog food for adult dogs"
+2. "Best rated dog treat natural"
+3. "Best selling dog accessory or toy"
+
+------------------------------------------------------------
+TIP: Look for products with 4.5+ stars and 300+ reviews. Variety of price points preferred (budget / mid / premium).
+------------------------------------------------------------
+
+Image URL format to look for:
+  https://m.media-amazon.com/images/I/XXXXXXX._AC_SL1500_.jpg
+
+Paste the Amazon product page URL for each item, e.g.:
+  https://www.amazon.com/dp/B08XYZ1234

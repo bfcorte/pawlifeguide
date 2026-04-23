@@ -723,7 +723,17 @@
         "best how to train a dog to sit",
         "how to train a dog to sit recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-22",
+          "slug": "how-to-train-a-dog-to-sit",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best invisible fence for dogs",
