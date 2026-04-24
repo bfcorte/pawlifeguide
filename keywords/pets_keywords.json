@@ -819,7 +819,17 @@
         "best cat litter for apartments",
         "cat litter for apartments recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-24",
+          "slug": "best-cat-litter-for-apartments",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best automatic cat feeders",
