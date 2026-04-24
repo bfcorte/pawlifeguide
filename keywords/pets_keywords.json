@@ -793,7 +793,17 @@
         "best how to care for a guinea pig",
         "how to care for a guinea pig recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-24",
+          "slug": "how-to-care-for-a-guinea-pig",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best cat litter for apartments",
