@@ -825,7 +825,17 @@
         "best automatic cat feeders",
         "automatic cat feeders recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-23",
+          "slug": "best-automatic-cat-feeders",
+          "angle": "listicle",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "cat scratching post review",
