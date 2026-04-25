@@ -23,9 +23,10 @@ log = logging.getLogger(__name__)
 YEAR = datetime.now().year
 
 
-# ── Claude API integration (disabled — articles are written in Claude Code session) ──
-# To write an article manually: open Claude Code and say "escreve os artigos de hoje"
-# Claude reads the pending drafts and rewrites them at editorial quality.
+# ── Claude CLI integration via subprocess ──────────────────────────────────────
+# Uses the installed Claude Code CLI (claude.exe -p) so no extra API cost.
+# The scheduler calls this automatically — same $20/month subscription.
+CLAUDE_EXE = r"C:\Users\Bombc\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude-code\2.1.111\claude.exe"
 
 EDITORIAL_SYSTEM_PROMPT = """You are an expert pet journalist writing for PawLife Guide (thepawlifeguide.com).
 
@@ -114,92 +115,116 @@ STRUCTURE FOR HOW-TO:
 Write in American English. Be direct. Trust the reader's intelligence."""
 
 
-def _get_claude_api_key(config: dict) -> str | None:
-    return None  # API writing disabled — handled in Claude Code session
-
-
 def write_with_claude(keyword: str, angle: str, category: str, config: dict) -> str | None:
-    """Generate article using Claude API. Returns markdown string or None on failure."""
-    api_key = _get_claude_api_key(config)
-    if not api_key:
-        log.warning("No Claude API key found. Set ANTHROPIC_API_KEY or add claude_api_key to config.json")
+    """Generate article using Claude CLI subprocess (no extra API cost — uses existing subscription).
+    Calls: claude.exe -p "<prompt>" and captures the output as the article markdown."""
+    import subprocess, os
+    from pathlib import Path as _Path
+
+    exe = CLAUDE_EXE
+    if not _Path(exe).exists():
+        log.warning(f"Claude CLI not found at {exe} — falling back to templates")
         return None
-    try:
-        import anthropic
-        client = anthropic.Anthropic(api_key=api_key)
 
-        angle_instruction = {
-            "listicle":    "Write a listicle article with 3 product picks (use [PRODUCT_CARD] placeholder for each).",
-            "buyers-guide":"Write a buyer's guide with 3 product picks (use [PRODUCT_CARD] placeholder for each).",
-            "how-to":      "Write a step-by-step how-to guide with 3 recommended product placeholders ([PRODUCT_CARD]).",
-            "care-guide":  "Write a comprehensive care guide with 3 product recommendations ([PRODUCT_CARD]).",
-            "comparison":  "Write a comparison article with a clear verdict. Include 3 products ([PRODUCT_CARD]).",
-        }.get(angle, "Write a listicle with 3 product picks ([PRODUCT_CARD] placeholder for each).")
+    angle_instruction = {
+        "listicle":    "Write a listicle with exactly 3 product picks. Use [PRODUCT_CARD] placeholder where each product card should appear.",
+        "buyers-guide":"Write a buyer's guide with exactly 3 product picks at different price tiers. Use [PRODUCT_CARD] placeholder for each.",
+        "how-to":      "Write a step-by-step how-to guide with exactly 3 recommended product placeholders using [PRODUCT_CARD].",
+        "care-guide":  "Write a comprehensive care guide with exactly 3 product recommendations using [PRODUCT_CARD].",
+        "comparison":  "Write a comparison article with a clear verdict. Include exactly 3 products using [PRODUCT_CARD].",
+    }.get(angle, "Write a listicle with exactly 3 product picks. Use [PRODUCT_CARD] placeholder for each.")
 
-        user_prompt = f"""Write a complete, publication-ready article for PawLife Guide.
+    prompt = f"""{EDITORIAL_SYSTEM_PROMPT}
+
+---
+
+Write a complete, publication-ready article for PawLife Guide (thepawlifeguide.com).
 
 Topic: "{keyword}"
 Category: {category}
 Format: {angle_instruction}
 
 Requirements:
-- 900-1100 words
-- Open with a specific surprising statistic (real, verifiable)
-- Include [PRODUCT_CARD] exactly 3 times where products should appear
-- Use real expert/organization citations relevant to {category} (WSAVA, AKC, Cornell, AVMA, etc.)
-- Criteria section must include specific numbers (mg, kcal, %, measurements)
-- 5 FAQ questions with real, specific answers
-- Title on first line as # Heading
+- 900-1100 words total
+- First line must be: # [Your Title Here]
+- Open the article with a specific, surprising, verifiable statistic — never "Choosing X is important"
+- Use [PRODUCT_CARD] exactly 3 times where products should appear (one per product pick)
+- Include at least one real expert/organization citation (WSAVA, AKC, Cornell, AVMA, AAFCO, AAFP, etc.) with specific credentials
+- Criteria section must use real numbers: mg, kcal, %, measurements — not vague adjectives
+- 5 FAQ questions as ### headings with real, specific answers — no "it depends" without giving the criteria
+- End with a short italic closing line
 
-Return only the article markdown. No preamble."""
+Return ONLY the article markdown. No preamble, no explanation, no surrounding text."""
 
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=3000,
-            system=EDITORIAL_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_prompt}],
+    try:
+        result = subprocess.run(
+            [exe, "-p", prompt],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=120,
         )
-        content = response.content[0].text.strip()
-        log.info(f"Claude wrote article for '{keyword}' ({len(content.split())} words)")
+        if result.returncode != 0:
+            log.error(f"Claude CLI error (returncode={result.returncode}): {result.stderr[:500]}")
+            return None
+        content = result.stdout.strip()
+        if len(content.split()) < 200:
+            log.warning(f"Claude CLI returned suspiciously short content ({len(content.split())} words) — falling back")
+            return None
+        log.info(f"Claude CLI wrote article for '{keyword}' ({len(content.split())} words)")
         return content
+    except subprocess.TimeoutExpired:
+        log.error("Claude CLI timed out after 120s")
+        return None
     except Exception as e:
-        log.error(f"Claude API error: {e}")
+        log.error(f"Claude CLI subprocess error: {e}")
         return None
 
 
 def review_with_claude(content: str, title: str, keyword: str, config: dict) -> bool:
-    """Editorial review via Claude Haiku. Returns True if passes, False if needs fix."""
-    api_key = _get_claude_api_key(config)
-    if not api_key:
-        return True  # No key — skip review, allow publish
-    try:
-        import anthropic, json as _json
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=300,
-            messages=[{"role": "user", "content": f"""Editorial checklist review. Respond ONLY with valid JSON.
+    """Quick editorial review via Claude CLI. Returns True if passes."""
+    import subprocess, json as _json
+    from pathlib import Path as _Path
+
+    exe = CLAUDE_EXE
+    if not _Path(exe).exists():
+        return True
+
+    prompt = f"""Editorial checklist review. Respond ONLY with valid JSON, nothing else.
 
 Title: {title}
 Keyword: {keyword}
-Article (first 1500 chars): {content[:1500]}
+Article (first 1200 chars): {content[:1200]}
 
 Check:
-1. Title avoids: "No Fluff", "Real Data", "X Picks", "The Method Vets Actually Recommend", "best best"
-2. Opens with a specific statistic or fact (not "Choosing X is important" or generic)
-3. Has [PRODUCT_CARD] placeholder at least once
-4. Criteria section has specific numbers (%, mg, kcal, etc.) or clear specifics
+1. Title avoids banned patterns: "No Fluff", "Real Data", "X Picks", "The Method Vets Actually Recommend", "best best"
+2. Opens with a specific statistic or surprising fact (not "Choosing X is important")
+3. Contains [PRODUCT_CARD] at least once
+4. Has specific numbers in criteria (%, mg, kcal, inches, etc.)
 
-JSON format: {{"pass": true, "issues": []}} or {{"pass": false, "issues": ["issue1", "issue2"]}}"""}]
+Respond with ONLY this JSON (no markdown, no explanation):
+{{"pass": true, "issues": []}}
+or
+{{"pass": false, "issues": ["issue description"]}}"""
+
+    try:
+        result = subprocess.run(
+            [exe, "-p", prompt],
+            capture_output=True, text=True, encoding="utf-8", timeout=30,
         )
-        result = _json.loads(response.content[0].text.strip())
-        if not result.get("pass"):
-            log.warning(f"Editorial review FAILED: {result.get('issues')}")
+        raw = result.stdout.strip()
+        # Strip any markdown code fences if Claude wrapped in ```json
+        raw = raw.strip("` \n")
+        if raw.startswith("json"):
+            raw = raw[4:].strip()
+        review = _json.loads(raw)
+        if not review.get("pass"):
+            log.warning(f"Editorial review FAILED: {review.get('issues')}")
         else:
             log.info("Editorial review PASSED")
-        return result.get("pass", True)
+        return review.get("pass", True)
     except Exception as e:
-        log.warning(f"Review skipped (error): {e}")
+        log.warning(f"Review skipped ({e})")
         return True
 
 # ── Category detection ────────────────────────────────────────────────────────
