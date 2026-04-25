@@ -871,7 +871,17 @@
         "best cat scratching post review",
         "cat scratching post review recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-24",
+          "slug": "cat-scratching-post-review",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best no-pull dog harness",

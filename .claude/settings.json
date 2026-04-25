@@ -15,7 +15,27 @@
       "Bash(git commit *)",
       "Bash(git push *)",
       "Bash(npm audit)",
-      "Bash(npm audit *)"
+      "Bash(npm audit *)",
+      "Bash(python -)",
+      "Bash(python scripts/rewrite_article.py --slug best-cat-food-indoor-cats --content \"articles/drafts/rewrite_best-cat-food-indoor-cats.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-wet-cat-food-brands --content \"articles/drafts/rewrite_best-wet-cat-food-brands.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-dog-treats-for-training --content \"articles/drafts/rewrite_best-dog-treats-for-training.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-interactive-cat-toys --content \"articles/drafts/rewrite_best-interactive-cat-toys.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-pets-for-apartments --content \"articles/drafts/rewrite_best-pets-for-apartments.md\")",
+      "Bash(python scripts/rewrite_article.py --slug how-to-train-a-cat --content \"articles/drafts/rewrite_how-to-train-a-cat.md\")",
+      "Bash(python scripts/rewrite_article.py --slug how-to-cycle-a-fish-tank --content \"articles/drafts/rewrite_how-to-cycle-a-fish-tank.md\")",
+      "Bash(python scripts/rewrite_article.py --slug how-to-introduce-a-new-cat --content \"articles/drafts/rewrite_how-to-introduce-a-new-cat.md\")",
+      "Bash(python scripts/rewrite_article.py --slug how-to-keep-fish-tank-clean --content \"articles/drafts/rewrite_how-to-keep-fish-tank-clean.md\")",
+      "Bash(python scripts/rewrite_article.py --slug how-to-train-a-dog-to-sit --content \"articles/drafts/rewrite_how-to-train-a-dog-to-sit.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-air-purifier-for-pet-dander-2025 --content \"articles/drafts/rewrite_best-air-purifier-for-pet-dander.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-aquarium-plants-for-beginners --content \"articles/drafts/rewrite_best-aquarium-plants-for-beginners.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-automatic-cat-feeders --content \"articles/drafts/rewrite_best-automatic-cat-feeders.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-dog-food-for-large-breeds --content \"articles/drafts/rewrite_best-dog-food-for-large-breeds.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-dog-food-for-small-breeds --content \"articles/drafts/rewrite_best-dog-food-for-small-breeds.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-dog-toys-for-aggressive-chewers --content \"articles/drafts/rewrite_best-dog-toys-for-aggressive-chewers.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-invisible-fence-for-dogs --content \"articles/drafts/rewrite_best-invisible-fence-for-dogs.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-no-pull-dog-harness --content \"articles/drafts/rewrite_best-no-pull-dog-harness.md\")",
+      "Bash(python scripts/rewrite_article.py --slug best-pet-insurance-2026 --content \"articles/drafts/rewrite_best-pet-insurance-2026.md\")"
     ]
   }
 }
