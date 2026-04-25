@@ -435,6 +435,9 @@ def publish(slug: str) -> dict:
     meta = json.loads(meta_path.read_text()) if meta_path.exists() else {"slug": slug}
 
     content_html = md_to_html(content)
+    # Strip [PRODUCT_CARD] placeholders — products will be injected later via /inject-products
+    content_html = re.sub(r'<p>\s*\[PRODUCT_CARD\]\s*</p>', '', content_html)
+    content_html = re.sub(r'\[PRODUCT_CARD\]', '', content_html)
     article_html = build_article_html(content_html, meta, config)
 
     post_dir = Path(f"blog/posts/{slug}")
