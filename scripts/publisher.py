@@ -9,6 +9,7 @@ import re
 import argparse
 import logging
 import subprocess
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
@@ -478,6 +479,22 @@ def publish(slug: str) -> dict:
         except subprocess.CalledProcessError as e:
             log.error(f"Git push failed: {e}")
             published_log["pushed"] = False
+
+    # Notify Bing IndexNow so new pages are indexed immediately
+    try:
+        page_url = f"{config['blog_identity']['url']}/posts/{slug}/"
+        indexnow_key = config.get("indexnow_key", "")
+        if indexnow_key and published_log.get("pushed"):
+            api_url = (
+                f"https://api.indexnow.org/indexnow"
+                f"?url={urllib.request.quote(page_url, safe=':/')}"
+                f"&key={indexnow_key}"
+            )
+            req = urllib.request.Request(api_url, headers={"User-Agent": "PawLifeGuide/1.0"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                log.info(f"IndexNow ping: {resp.status} — {page_url}")
+    except Exception as e:
+        log.warning(f"IndexNow ping failed: {e}")
 
     # Marca keyword como usada para evitar repetição
     try:

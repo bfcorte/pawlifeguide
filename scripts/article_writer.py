@@ -22,6 +22,185 @@ log = logging.getLogger(__name__)
 
 YEAR = datetime.now().year
 
+
+# ── Claude API integration ─────────────────────────────────────────────────────
+
+EDITORIAL_SYSTEM_PROMPT = """You are an expert pet journalist writing for PawLife Guide (thepawlifeguide.com).
+
+EDITORIAL STANDARD — NON-NEGOTIABLE:
+- Every article must read like it was written by a knowledgeable journalist, not an AI with a template
+- Open with a specific, surprising, verifiable statistic — never with "Choosing X is important"
+- Use real expert citations: WSAVA, AKC, Cornell Feline Health Center, AVMA, AAAAI, AAFCO, specific named vets with credentials
+- Criteria must be specific with real numbers: mg, kcal, %, measurements — not vague adjectives
+- FAQ answers must actually answer the question. Never "it depends" without giving the criteria
+- No "best best" double words. No "X Picks, No Fluff". No "Real Data". No "The Method Vets Actually Recommend"
+- Product section badges must be specific: "Best for Senior Dogs" not just "Best Overall" (except #1)
+
+STRUCTURE FOR LISTICLE:
+# [Title]
+[Hook — specific stat]
+[2-sentence context paragraph]
+<div class="quick-answer"><strong>Quick Answer:</strong> [2-line direct answer]</div>
+*As an Amazon Associate I earn from qualifying purchases. This doesn't affect our recommendations.*
+---
+## Table of Contents
+[links]
+---
+## What Actually Matters
+[H3 per criterion with real data]
+---
+## What to Avoid
+[bullet list]
+---
+## Our Top Picks
+[Every product below meets: 4.5+ stars, 300+ reviews, Prime eligible, no recalls]
+### #1 — Best Overall
+[PRODUCT_CARD]
+[2-3 sentence specific editorial — WHY this is #1, what makes it different]
+---
+### #2 — Best Value
+[PRODUCT_CARD]
+[specific editorial]
+---
+### #3 — [Specific badge like "Best for Seniors" or "Best for Apartments"]
+[PRODUCT_CARD]
+[specific editorial]
+---
+## How We Choose
+[standards list]
+---
+## Expert Perspective
+[Real expert name, credentials, institution — specific quote or recommendation]
+---
+## FAQ
+[5 questions as H3, real specific answers]
+---
+*[disclaimer]*
+
+STRUCTURE FOR HOW-TO:
+# [Title]
+[Hook — specific stat about consequences of doing this wrong]
+<div class="quick-answer">...</div>
+*Amazon disclaimer*
+---
+## Why This Matters
+[Why getting this wrong causes real problems — specific]
+---
+## Before You Start
+[Preparation list specific to the topic]
+---
+## Step-by-Step Guide
+### Step 1: [Specific action]
+[What to do, why it works — cite science when available]
+[repeat for 4-6 steps]
+---
+## Mistakes That Set You Back
+[bullet list of actual mistakes people make]
+---
+## Recommended Products
+[intro sentence]
+[PRODUCT_CARD]
+[PRODUCT_CARD]
+[PRODUCT_CARD]
+---
+## Expert Perspective
+[Real expert]
+---
+## FAQ
+[5 questions]
+
+Write in American English. Be direct. Trust the reader's intelligence."""
+
+
+def _get_claude_api_key(config: dict) -> str | None:
+    import os
+    return config.get("claude_api_key") or os.environ.get("ANTHROPIC_API_KEY")
+
+
+def write_with_claude(keyword: str, angle: str, category: str, config: dict) -> str | None:
+    """Generate article using Claude API. Returns markdown string or None on failure."""
+    api_key = _get_claude_api_key(config)
+    if not api_key:
+        log.warning("No Claude API key found. Set ANTHROPIC_API_KEY or add claude_api_key to config.json")
+        return None
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+
+        angle_instruction = {
+            "listicle":    "Write a listicle article with 3 product picks (use [PRODUCT_CARD] placeholder for each).",
+            "buyers-guide":"Write a buyer's guide with 3 product picks (use [PRODUCT_CARD] placeholder for each).",
+            "how-to":      "Write a step-by-step how-to guide with 3 recommended product placeholders ([PRODUCT_CARD]).",
+            "care-guide":  "Write a comprehensive care guide with 3 product recommendations ([PRODUCT_CARD]).",
+            "comparison":  "Write a comparison article with a clear verdict. Include 3 products ([PRODUCT_CARD]).",
+        }.get(angle, "Write a listicle with 3 product picks ([PRODUCT_CARD] placeholder for each).")
+
+        user_prompt = f"""Write a complete, publication-ready article for PawLife Guide.
+
+Topic: "{keyword}"
+Category: {category}
+Format: {angle_instruction}
+
+Requirements:
+- 900-1100 words
+- Open with a specific surprising statistic (real, verifiable)
+- Include [PRODUCT_CARD] exactly 3 times where products should appear
+- Use real expert/organization citations relevant to {category} (WSAVA, AKC, Cornell, AVMA, etc.)
+- Criteria section must include specific numbers (mg, kcal, %, measurements)
+- 5 FAQ questions with real, specific answers
+- Title on first line as # Heading
+
+Return only the article markdown. No preamble."""
+
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=3000,
+            system=EDITORIAL_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        content = response.content[0].text.strip()
+        log.info(f"Claude wrote article for '{keyword}' ({len(content.split())} words)")
+        return content
+    except Exception as e:
+        log.error(f"Claude API error: {e}")
+        return None
+
+
+def review_with_claude(content: str, title: str, keyword: str, config: dict) -> bool:
+    """Editorial review via Claude Haiku. Returns True if passes, False if needs fix."""
+    api_key = _get_claude_api_key(config)
+    if not api_key:
+        return True  # No key — skip review, allow publish
+    try:
+        import anthropic, json as _json
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            messages=[{"role": "user", "content": f"""Editorial checklist review. Respond ONLY with valid JSON.
+
+Title: {title}
+Keyword: {keyword}
+Article (first 1500 chars): {content[:1500]}
+
+Check:
+1. Title avoids: "No Fluff", "Real Data", "X Picks", "The Method Vets Actually Recommend", "best best"
+2. Opens with a specific statistic or fact (not "Choosing X is important" or generic)
+3. Has [PRODUCT_CARD] placeholder at least once
+4. Criteria section has specific numbers (%, mg, kcal, etc.) or clear specifics
+
+JSON format: {{"pass": true, "issues": []}} or {{"pass": false, "issues": ["issue1", "issue2"]}}"""}]
+        )
+        result = _json.loads(response.content[0].text.strip())
+        if not result.get("pass"):
+            log.warning(f"Editorial review FAILED: {result.get('issues')}")
+        else:
+            log.info("Editorial review PASSED")
+        return result.get("pass", True)
+    except Exception as e:
+        log.warning(f"Review skipped (error): {e}")
+        return True
+
 # ── Category detection ────────────────────────────────────────────────────────
 CATEGORY_MAP = {
     "cats":       ["cat", "kitten", "feline", "catnip", "litter", "hairball", "indoor cat"],
@@ -65,13 +244,23 @@ def _strip_leading_superlatives(keyword: str) -> str:
     for s in stops:
         if kw.startswith(s):
             kw = kw[len(s):]
+    # Also strip trailing noise words that come from keyword research
+    trailing = (" review", " reviews", " guide", " tips", " 2026", " 2025", " 2024")
+    for t in trailing:
+        if kw.endswith(t):
+            kw = kw[: -len(t)]
     return kw.strip().title()
 
 
 def build_title(keyword: str, angle: str) -> str:
     # Strip year from keyword to avoid "2026 in 2026" duplication
     kw_clean = _strip_leading_superlatives(re.sub(r"\b20\d{2}\b", "", keyword).strip())
-    kw_action = re.sub(r"^how\s+to\s+", "", keyword.strip(), flags=re.IGNORECASE).strip().title()
+    kw_action = re.sub(r"^how\s+to\s+", "", keyword.strip(), flags=re.IGNORECASE).strip()
+    # Strip trailing noise from action form too
+    for t in (" review", " reviews", " guide", " tips"):
+        if kw_action.lower().endswith(t):
+            kw_action = kw_action[: -len(t)]
+    kw_action = kw_action.strip().title()
     n = random.choice(COUNT_OPTIONS)
     hook = random.choice(CREDIBILITY_HOOKS)
 
@@ -79,10 +268,10 @@ def build_title(keyword: str, angle: str) -> str:
         f"{n} Best {kw_clean} in {YEAR} ({hook})",
         f"The {n} Best {kw_clean} for {YEAR} — {hook}",
         f"Best {kw_clean} in {YEAR}: {n} Options Worth Your Money",
-        f"{n} {kw_clean} That Actually Work in {YEAR}",
+        f"{n} Best {kw_clean} — Ranked and Reviewed for {YEAR}",
     ]
     howto_formats = [
-        f"How to {kw_action}: The Method Vets Actually Recommend ({YEAR})",
+        f"How to {kw_action}: A Step-by-Step Guide That Actually Works",
         f"How to {kw_action} the Right Way — Step-by-Step Guide",
         f"The Right Way to {kw_action} ({YEAR} Guide)",
     ]
@@ -90,7 +279,7 @@ def build_title(keyword: str, angle: str) -> str:
         f"{n} Best {kw_clean} in {YEAR} ({hook})",
         f"Best {kw_clean} in {YEAR}: What to Buy and What to Skip",
         f"The {n} Best {kw_clean} Right Now — {hook}",
-        f"{n} Best {kw_clean} ({YEAR}): Honest Picks, No Fluff",
+        f"{n} Best {kw_clean} in {YEAR}: Ranked by What Actually Matters",
     ]
 
     templates = {
@@ -412,12 +601,24 @@ def get_knowledge(keyword: str, category: str) -> dict:
 
 # ── Article builder ───────────────────────────────────────────────────────────
 def build_article(keyword: str, angle: str, config: dict) -> str:
-    identity = config["blog_identity"]
     title = build_title(keyword, angle)
     category = detect_category(keyword)
     kw = keyword.lower()
-    knowledge = get_knowledge(keyword, category)
 
+    # Try Claude API first — falls back to templates if unavailable
+    claude_content = write_with_claude(keyword, angle, category, config)
+    if claude_content:
+        # Extract title from Claude's output (first # heading) or keep our generated title
+        lines = claude_content.splitlines()
+        if lines and lines[0].startswith("# "):
+            title = lines[0][2:].strip()
+            claude_content = "\n".join(lines[1:]).strip()
+        # Run editorial review
+        review_with_claude(claude_content, title, keyword, config)
+        return f"# {title}\n\n{claude_content}"
+
+    # Fallback: template-based generation
+    knowledge = get_knowledge(keyword, category)
     hook = knowledge.get("hook", "")
     context = knowledge.get("context", "")
     expert_note = knowledge.get("expert_note", "")

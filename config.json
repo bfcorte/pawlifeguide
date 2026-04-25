@@ -44,5 +44,7 @@
     "keywords_refresh_days": 30,
     "keyword_reuse_cooldown_days": 90,
     "keyword_annual_update_days": 365
-  }
+  },
+  "indexnow_key": "pawlifef98e9a1063f242ad",
+  "claude_api_key": ""
 }
