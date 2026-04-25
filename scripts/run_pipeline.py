@@ -44,7 +44,17 @@ def run_pipeline(keyword: str, angle: str) -> dict:
         log.info(f"Ready: {ready_path}")
     except Exception as e:
         log.error(f"Product injection failed: {e}")
-        ready_path = draft_path  # continue without products
+        # Fallback: copia draft para ready/ sem produtos — publisher consegue publicar
+        import shutil
+        ready_dir = Path("articles/ready")
+        ready_dir.mkdir(exist_ok=True)
+        draft_file = Path(draft_path)
+        meta_file = Path(str(draft_path).replace(".md", "_meta.json"))
+        shutil.copy2(draft_file, ready_dir / draft_file.name)
+        if meta_file.exists():
+            shutil.copy2(meta_file, ready_dir / meta_file.name)
+        ready_path = str(ready_dir / draft_file.name)
+        log.info(f"Draft copiado para ready (sem produtos): {ready_path}")
 
     # Step 3: SEO check
     log.info("Step 3/3: Running SEO optimizer...")
