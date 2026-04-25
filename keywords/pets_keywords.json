@@ -923,7 +923,17 @@
         "best dog crates for home",
         "dog crates for home recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-25",
+          "slug": "best-dog-crates-for-home",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "how to care for a cockatiel",

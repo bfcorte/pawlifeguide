@@ -35,7 +35,11 @@
       "Bash(python scripts/rewrite_article.py --slug best-dog-toys-for-aggressive-chewers --content \"articles/drafts/rewrite_best-dog-toys-for-aggressive-chewers.md\")",
       "Bash(python scripts/rewrite_article.py --slug best-invisible-fence-for-dogs --content \"articles/drafts/rewrite_best-invisible-fence-for-dogs.md\")",
       "Bash(python scripts/rewrite_article.py --slug best-no-pull-dog-harness --content \"articles/drafts/rewrite_best-no-pull-dog-harness.md\")",
-      "Bash(python scripts/rewrite_article.py --slug best-pet-insurance-2026 --content \"articles/drafts/rewrite_best-pet-insurance-2026.md\")"
+      "Bash(python scripts/rewrite_article.py --slug best-pet-insurance-2026 --content \"articles/drafts/rewrite_best-pet-insurance-2026.md\")",
+      "Bash(git -C c:/Users/Bombc/Documents/Blogs/blog-pets log --oneline -5)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Bombc\\.claude\\projects\\c--Users-Bombc-Documents-Blogs-blog-pets\\memory"
     ]
   }
 }

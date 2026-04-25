@@ -195,7 +195,7 @@ def get_placeholder_products(keyword: str) -> list[dict]:
 
 def inject_products(slug: str, config: dict) -> str:
     """Find draft article, inject product cards, move to ready."""
-    draft_files = list(Path("articles/draft").glob(f"{slug}*.md"))
+    draft_files = list(Path("articles/draft").rglob(f"{slug}*.md"))
     if not draft_files:
         log.error(f"No draft found for slug: {slug}")
         raise FileNotFoundError(f"Draft not found: {slug}")

@@ -111,7 +111,7 @@ def generate_schema(meta: dict, config: dict) -> str:
 
 def run_checks(slug: str) -> dict:
     config = load_config()
-    ready_files = list(Path("articles/ready").glob(f"{slug}*.md"))
+    ready_files = list(Path("articles/ready").rglob(f"{slug}*.md"))
     if not ready_files:
         log.error(f"No ready article found for: {slug}")
         raise FileNotFoundError(f"Article not found: {slug}")

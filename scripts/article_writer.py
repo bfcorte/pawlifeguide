@@ -145,13 +145,14 @@ Category: {category}
 Format: {angle_instruction}
 
 Requirements:
-- 900-1100 words total
+- MINIMUM 2000 words — write fully developed sections, do not stop early
 - First line must be: # [Your Title Here]
 - Open the article with a specific, surprising, verifiable statistic — never "Choosing X is important"
 - Use [PRODUCT_CARD] exactly 3 times where products should appear (one per product pick)
-- Include at least one real expert/organization citation (WSAVA, AKC, Cornell, AVMA, AAFCO, AAFP, etc.) with specific credentials
-- Criteria section must use real numbers: mg, kcal, %, measurements — not vague adjectives
-- 5 FAQ questions as ### headings with real, specific answers — no "it depends" without giving the criteria
+- Include at least one real expert/organization citation (WSAVA, AKC, Cornell, AVMA, AAFCO, AAFP, etc.) with specific credentials and a direct quote
+- Every criterion section: full paragraph of 4+ sentences with real numbers (mg, kcal, %, dimensions, weights)
+- Each product pick: full paragraph of 5+ sentences — why it ranked here, the specific data behind it, who it's ideal for, one honest caveat
+- 6–8 FAQ questions as ### headings, minimum 60 words per answer, no "it depends" without exact criteria
 - End with a short italic closing line
 
 Return ONLY the article markdown. No preamble, no explanation, no surrounding text."""
@@ -162,13 +163,13 @@ Return ONLY the article markdown. No preamble, no explanation, no surrounding te
             capture_output=True,
             text=True,
             encoding="utf-8",
-            timeout=120,
+            timeout=300,  # 5 min — artigos de 2000+ palavras precisam de mais tempo
         )
         if result.returncode != 0:
             log.error(f"Claude CLI error (returncode={result.returncode}): {result.stderr[:500]}")
             return None
         content = result.stdout.strip()
-        if len(content.split()) < 200:
+        if len(content.split()) < 500:
             log.warning(f"Claude CLI returned suspiciously short content ({len(content.split())} words) — falling back")
             return None
         log.info(f"Claude CLI wrote article for '{keyword}' ({len(content.split())} words)")
