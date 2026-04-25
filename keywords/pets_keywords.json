@@ -949,7 +949,17 @@
         "best how to care for a cockatiel",
         "how to care for a cockatiel recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-25",
+          "slug": "how-to-care-for-a-cockatiel",
+          "angle": "how-to",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best betta fish tanks",

@@ -1,131 +1,119 @@
 #!/usr/bin/env python3
 """
-Rewrite all published articles with the new editorial standard.
-Extracts existing product cards, regenerates content, re-injects cards.
+rewrite_all.py — Reescreve todos os 26 artigos com a nova filosofia editorial.
+Conteúdo em primeiro lugar. Produto como consequência natural do artigo.
 Usage: python scripts/rewrite_all.py
 """
-import sys, os, json, re
+import sys, os, re, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from pathlib import Path
 from datetime import datetime
-from article_writer import build_article, build_title, build_meta_description, detect_category, slugify
-from publisher import build_article_html, md_to_html, build_adsense_slot, load_config
+from article_writer import write_with_claude, detect_category, load_config
+from rewrite_article import rewrite_post_body
 
-try:
-    from bs4 import BeautifulSoup
-except ImportError:
-    print("Installing beautifulsoup4...")
-    os.system("pip install beautifulsoup4 -q")
-    from bs4 import BeautifulSoup
-
+# Mapeamento completo: slug → (keyword, angle)
 SLUG_MAP = {
-    "best-aquarium-plants-for-beginners": ("best aquarium plants for beginners", "listicle"),
-    "best-cat-food-indoor-cats":          ("best cat food for indoor cats",       "listicle"),
-    "best-dog-food-for-small-breeds":     ("best dog food for small breeds",      "listicle"),
-    "best-dog-treats-for-training":       ("best dog treats for training",        "listicle"),
-    "best-interactive-cat-toys":          ("best interactive cat toys",           "listicle"),
-    "best-pets-for-apartments":           ("best pets for apartments",            "listicle"),
-    "best-wet-cat-food-brands":           ("best wet cat food brands",            "listicle"),
-    "how-to-cycle-a-fish-tank":           ("how to cycle a fish tank",            "how-to"),
-    "how-to-introduce-a-new-cat":         ("how to introduce a new cat",          "how-to"),
-    "how-to-train-a-cat":                 ("how to train a cat",                  "how-to"),
+    "best-air-purifier-for-pet-dander-2025": ("best air purifier for pet dander",      "listicle"),
+    "best-aquarium-plants-for-beginners":     ("best aquarium plants for beginners",    "listicle"),
+    "best-automatic-cat-feeders":             ("best automatic cat feeders",            "listicle"),
+    "best-cat-food-indoor-cats":              ("best cat food for indoor cats",         "listicle"),
+    "best-cat-litter-for-apartments":         ("best cat litter for apartments",        "listicle"),
+    "best-dog-crates-for-home":               ("best dog crates for home",              "listicle"),
+    "best-dog-food-brands-2026":              ("best dog food brands",                  "listicle"),
+    "best-dog-food-for-large-breeds":         ("best dog food for large breeds",        "listicle"),
+    "best-dog-food-for-small-breeds":         ("best dog food for small breeds",        "listicle"),
+    "best-dog-toys-for-aggressive-chewers":   ("best dog toys for aggressive chewers",  "listicle"),
+    "best-dog-treats-for-training":           ("best dog treats for training",          "listicle"),
+    "best-interactive-cat-toys":              ("best interactive cat toys",             "listicle"),
+    "best-invisible-fence-for-dogs":          ("best invisible fence for dogs",         "listicle"),
+    "best-no-pull-dog-harness":               ("best no pull dog harness",              "listicle"),
+    "best-pet-insurance-2026":                ("best pet insurance",                    "listicle"),
+    "best-pets-for-apartments":               ("best pets for apartments",              "listicle"),
+    "best-wet-cat-food-brands":               ("best wet cat food brands",              "listicle"),
+    "cat-scratching-post-review":             ("cat scratching post",                   "listicle"),
+    "how-to-care-for-a-cockatiel":            ("how to care for a cockatiel",           "how-to"),
+    "how-to-care-for-a-guinea-pig":           ("how to care for a guinea pig",          "how-to"),
+    "how-to-cycle-a-fish-tank":               ("how to cycle a fish tank",              "how-to"),
+    "how-to-introduce-a-new-cat":             ("how to introduce a new cat",            "how-to"),
+    "how-to-keep-fish-tank-clean":            ("how to keep fish tank clean",           "how-to"),
+    "how-to-stop-dog-barking":                ("how to stop dog barking",               "how-to"),
+    "how-to-train-a-cat":                     ("how to train a cat",                    "how-to"),
+    "how-to-train-a-dog-to-sit":              ("how to train a dog to sit",             "how-to"),
 }
-
-
-def extract_unique_cards(html_path: Path) -> list[str]:
-    """Extract up to 3 unique product cards from existing HTML."""
-    soup = BeautifulSoup(html_path.read_text(encoding="utf-8"), "html.parser")
-    cards = soup.find_all("div", class_="product-card")
-    seen_asins = set()
-    unique = []
-    for card in cards:
-        link = card.find("a", class_="btn-amazon")
-        asin = None
-        if link and link.get("href"):
-            m = re.search(r"/dp/([A-Z0-9]{10})", link["href"])
-            if m:
-                asin = m.group(1)
-        if asin and asin in seen_asins:
-            continue
-        if asin:
-            seen_asins.add(asin)
-        unique.append(str(card))
-        if len(unique) == 3:
-            break
-    return unique
-
-
-def inject_cards(html_body: str, cards: list[str]) -> str:
-    """Replace [PRODUCT_CARD] placeholders with actual card HTML."""
-    for card in cards:
-        html_body = html_body.replace("<p>[PRODUCT_CARD]</p>", card, 1)
-    # Remove any remaining placeholders
-    html_body = html_body.replace("<p>[PRODUCT_CARD]</p>", "")
-    return html_body
-
-
-def rewrite(slug: str, keyword: str, angle: str, config: dict) -> bool:
-    html_path = Path(f"blog/posts/{slug}/index.html")
-    if not html_path.exists():
-        print(f"  SKIP — not found: {html_path}")
-        return False
-
-    print(f"  Extracting cards from {slug}...")
-    cards = extract_unique_cards(html_path)
-    print(f"  Found {len(cards)} unique product card(s)")
-
-    print(f"  Generating new content for: {keyword} [{angle}]...")
-    md_content = build_article(keyword, angle, config)
-    title = build_title(keyword, angle)
-    meta_desc = build_meta_description(keyword, title, angle)
-    category = detect_category(keyword)
-    word_count = len(md_content.split())
-
-    # Convert markdown to HTML
-    body_html = md_to_html(md_content)
-
-    # Inject product cards
-    body_html = inject_cards(body_html, cards)
-
-    meta = {
-        "slug": slug,
-        "title": title,
-        "meta_description": meta_desc,
-        "primary_keyword": keyword,
-        "secondary_keywords": [],
-        "word_count": word_count,
-        "reading_time": f"{max(1, word_count // 200)} min",
-        "category": category,
-        "tags": [keyword, category],
-        "angle": angle,
-        "status": "published",
-        "created_at": datetime.now().isoformat(),
-    }
-
-    full_html = build_article_html(body_html, meta, config)
-    html_path.write_text(full_html, encoding="utf-8")
-    print(f"  ✓ Rewritten: {slug} ({word_count} words)")
-    return True
 
 
 def main():
     config = load_config()
-    posts_dir = Path("blog/posts")
-    success = 0
+    total = len(SLUG_MAP)
+    results = {"ok": [], "fail": []}
 
-    for slug, (keyword, angle) in SLUG_MAP.items():
-        print(f"\n[{slug}]")
-        if rewrite(slug, keyword, angle, config):
-            success += 1
+    draft_dir = Path(f"articles/drafts/rewrite_{datetime.now().strftime('%Y-%m-%d')}")
+    draft_dir.mkdir(parents=True, exist_ok=True)
 
-    # Git commit
-    print(f"\nAll done. {success}/{len(SLUG_MAP)} articles rewritten.")
-    print("Committing...")
-    os.system('git add blog/posts/')
-    os.system('git commit -m "Rewrite: all articles upgraded to editorial v2 standard — real data, vet citations, journalist voice"')
-    os.system('git push')
-    print("Pushed.")
+    print(f"\n{'='*60}")
+    print(f"Reescrevendo {total} artigos — filosofia: conteúdo primeiro")
+    print(f"{'='*60}\n")
+
+    for i, (slug, (keyword, angle)) in enumerate(SLUG_MAP.items(), 1):
+        category = detect_category(keyword)
+        print(f"[{i:02d}/{total}] {slug}")
+        print(f"       keyword: '{keyword}' | angle: {angle}")
+
+        # Gera novo conteúdo via Claude CLI
+        try:
+            new_md = write_with_claude(keyword, angle, category, config)
+        except Exception as e:
+            print(f"       ✗ ERRO Claude: {e}")
+            results["fail"].append(slug)
+            continue
+
+        if not new_md:
+            print(f"       ✗ Claude não retornou conteúdo")
+            results["fail"].append(slug)
+            continue
+
+        words = len(new_md.split())
+        print(f"       Claude: {words} palavras")
+
+        # Salva markdown de referência
+        (draft_dir / f"{slug}.md").write_text(new_md, encoding="utf-8")
+
+        # Reescreve o HTML preservando product cards existentes
+        try:
+            ok = rewrite_post_body(slug, new_md)
+            if ok:
+                print(f"       ✓ Reescrito")
+                results["ok"].append(slug)
+            else:
+                print(f"       ✗ Falha ao reescrever HTML")
+                results["fail"].append(slug)
+        except Exception as e:
+            print(f"       ✗ ERRO HTML: {e}")
+            results["fail"].append(slug)
+
+        print()
+
+    # Relatório
+    print(f"\n{'='*60}")
+    print(f"CONCLUÍDO: {len(results['ok'])}/{total} reescritos")
+    if results["fail"]:
+        print(f"Falhas: {results['fail']}")
+
+    # Git commit + push
+    if results["ok"]:
+        print("\nFazendo git commit + push...")
+        try:
+            subprocess.run(["git", "add", "blog/posts/", str(draft_dir)], check=True)
+            msg = f"Rewrite: conteudo-primeiro — {len(results['ok'])} artigos com nova filosofia editorial"
+            subprocess.run(["git", "commit", "-m", msg], check=True)
+            subprocess.run(["git", "push"], check=True)
+            print("Push concluído.")
+        except subprocess.CalledProcessError as e:
+            print(f"Git push falhou: {e}")
+
+    return results
+
 
 if __name__ == "__main__":
     main()
