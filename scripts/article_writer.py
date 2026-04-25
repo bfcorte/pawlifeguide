@@ -23,7 +23,9 @@ log = logging.getLogger(__name__)
 YEAR = datetime.now().year
 
 
-# ── Claude API integration ─────────────────────────────────────────────────────
+# ── Claude API integration (disabled — articles are written in Claude Code session) ──
+# To write an article manually: open Claude Code and say "escreve os artigos de hoje"
+# Claude reads the pending drafts and rewrites them at editorial quality.
 
 EDITORIAL_SYSTEM_PROMPT = """You are an expert pet journalist writing for PawLife Guide (thepawlifeguide.com).
 
@@ -113,8 +115,7 @@ Write in American English. Be direct. Trust the reader's intelligence."""
 
 
 def _get_claude_api_key(config: dict) -> str | None:
-    import os
-    return config.get("claude_api_key") or os.environ.get("ANTHROPIC_API_KEY")
+    return None  # API writing disabled — handled in Claude Code session
 
 
 def write_with_claude(keyword: str, angle: str, category: str, config: dict) -> str | None:
