@@ -57,6 +57,14 @@ def main():
 
     for i, (slug, (keyword, angle)) in enumerate(SLUG_MAP.items(), 1):
         category = detect_category(keyword)
+
+        # Pula artigos já reescritos nesta sessão
+        draft_file = draft_dir / f"{slug}.md"
+        if draft_file.exists():
+            print(f"[{i:02d}/{total}] {slug} — JA FEITO, pulando")
+            results["ok"].append(slug)
+            continue
+
         print(f"[{i:02d}/{total}] {slug}")
         print(f"       keyword: '{keyword}' | angle: {angle}")
 
@@ -64,12 +72,12 @@ def main():
         try:
             new_md = write_with_claude(keyword, angle, category, config)
         except Exception as e:
-            print(f"       ✗ ERRO Claude: {e}")
+            print(f"       ERRO Claude: {e}")
             results["fail"].append(slug)
             continue
 
         if not new_md:
-            print(f"       ✗ Claude não retornou conteúdo")
+            print(f"       FAIL Claude nao retornou conteudo")
             results["fail"].append(slug)
             continue
 
@@ -83,13 +91,13 @@ def main():
         try:
             ok = rewrite_post_body(slug, new_md)
             if ok:
-                print(f"       ✓ Reescrito")
+                print(f"       OK Reescrito")
                 results["ok"].append(slug)
             else:
-                print(f"       ✗ Falha ao reescrever HTML")
+                print(f"       FAIL Falha ao reescrever HTML")
                 results["fail"].append(slug)
         except Exception as e:
-            print(f"       ✗ ERRO HTML: {e}")
+            print(f"       ERRO HTML: {e}")
             results["fail"].append(slug)
 
         print()

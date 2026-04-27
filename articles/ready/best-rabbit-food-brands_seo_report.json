@@ -1,0 +1,38 @@
+{
+  "slug": "best-rabbit-food-brands",
+  "keyword": "best rabbit food brands",
+  "score": 83,
+  "passed": 5,
+  "total": 6,
+  "checks": {
+    "title": {
+      "pass": false,
+      "issue": "Title length 90 (should be 30-70)"
+    },
+    "word_count": {
+      "pass": true,
+      "value": 3133,
+      "issue": null
+    },
+    "quick_answer": {
+      "pass": true,
+      "issue": null
+    },
+    "disclaimer": {
+      "pass": true,
+      "issue": null
+    },
+    "faq": {
+      "pass": true,
+      "value": 8,
+      "issue": null
+    },
+    "h2_count": {
+      "pass": true,
+      "value": 7,
+      "issue": null
+    }
+  },
+  "schema_json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Article\",\n  \"headline\": \"Best Rabbit Food Brands in 2026: What to Buy and What to Skip\",\n  \"description\": \"Best best rabbit food brands in 2026 \\u2014 10 real picks with data, expert criteria, and honest reviews.\",\n  \"author\": {\n    \"@type\": \"Organization\",\n    \"name\": \"PawLife Guide\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"PawLife Guide\",\n    \"url\": \"https://thepawlifeguide.com\"\n  },\n  \"datePublished\": \"2026-04-27T16:02:07.813887\",\n  \"dateModified\": \"2026-04-27T16:02:07.862878\",\n  \"mainEntityOfPage\": {\n    \"@type\": \"WebPage\",\n    \"@id\": \"https://thepawlifeguide.com/posts/best-rabbit-food-brands\"\n  }\n}",
+  "generated_at": "2026-04-27T16:02:07.862878"
+}
