@@ -1027,7 +1027,17 @@
         "best pet cameras for home",
         "pet cameras for home recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-28",
+          "slug": "best-pet-cameras-for-home",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "how to reduce cat shedding",
