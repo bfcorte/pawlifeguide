@@ -1001,7 +1001,17 @@
         "best rabbit food brands",
         "rabbit food brands recommended"
       ],
-      "used_history": []
+      "used_history": [
+        {
+          "used_at": "2026-04-27",
+          "slug": "best-rabbit-food-brands",
+          "angle": "buyers-guide",
+          "performance_30d": {
+            "views": 0,
+            "clicks": 0
+          }
+        }
+      ]
     },
     {
       "keyword": "best pet cameras for home",

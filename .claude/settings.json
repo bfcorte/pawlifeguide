@@ -37,7 +37,8 @@
       "Bash(python scripts/rewrite_article.py --slug best-no-pull-dog-harness --content \"articles/drafts/rewrite_best-no-pull-dog-harness.md\")",
       "Bash(python scripts/rewrite_article.py --slug best-pet-insurance-2026 --content \"articles/drafts/rewrite_best-pet-insurance-2026.md\")",
       "Bash(git -C c:/Users/Bombc/Documents/Blogs/blog-pets log --oneline -5)",
-      "Bash(echo \"PID: $!\")"
+      "Bash(echo \"PID: $!\")",
+      "Bash(\"C:/Users/Bombc/AppData/Local/Packages/Claude_pzs8sxrjxfjjc/LocalCache/Roaming/Claude/claude-code/2.1.111/claude.exe\" -p \"Say hello\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Bombc\\.claude\\projects\\c--Users-Bombc-Documents-Blogs-blog-pets\\memory"
